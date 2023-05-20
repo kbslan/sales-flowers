@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/sales_flowers?serverTimezone=GMT%2b8&characterEncoding=UTF-8&autoReconnect=true&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false&connectTimeout=2000&socketTimeout=150000
+    username: root
+    password: 123456
+    initialSize: 4
+    minIdle: 4
+    maxActive: 20
+    maxWait: 30000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: -1
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    useGlobalDataSourceStat: true
