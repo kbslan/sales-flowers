@@ -2,7 +2,7 @@ package com.dy.sales.flowers.config.filter.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.dy.sales.flowers.config.LoginConfig;
-import com.dy.sales.flowers.config.filter.SSOFilter;
+import com.dy.sales.flowers.config.filter.SsoFilter;
 import com.dy.sales.flowers.exception.LoginException;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.response.UserContext;
@@ -22,10 +22,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
+/**
+ * ip和浏览器校验
+ *
+ * @author chao.lan
+ */
 @Slf4j
 @Component
 @Order(4)
-public class IpAndBrowserFilter  implements SSOFilter {
+public class IpAndBrowserFilter implements SsoFilter {
 
     @Resource
     private LoginConfig loginConfig;

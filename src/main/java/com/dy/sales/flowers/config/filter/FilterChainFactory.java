@@ -16,21 +16,26 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/**
+ * 过滤器责任链工厂
+ *
+ * @author chao.lan
+ */
 @Component
 public class FilterChainFactory {
 
-    private static List<SSOFilter> filters;
+    private static List<SsoFilter> filters;
 
     public static FilterChain getFilterChain() {
         return new SsoFilterChain(filters);
     }
 
     public static class SsoFilterChain implements FilterChain {
-        private List<SSOFilter> filters;
+        private List<SsoFilter> filters;
 
-        private Iterator<SSOFilter> iterator;
+        private Iterator<SsoFilter> iterator;
 
-        public SsoFilterChain(List<SSOFilter> filters) {
+        public SsoFilterChain(List<SsoFilter> filters) {
             this.filters = filters;
         }
 
@@ -41,14 +46,14 @@ public class FilterChainFactory {
             }
 
             if (this.iterator.hasNext()) {
-                SSOFilter nextFilter = this.iterator.next();
+                SsoFilter nextFilter = this.iterator.next();
                 nextFilter.doFilter(servletRequest, servletResponse, this);
             }
         }
     }
 
     @Autowired
-    public void setFilters(List<SSOFilter> filters) {
+    public void setFilters(List<SsoFilter> filters) {
         if (CollectionUtils.isEmpty(filters)) {
             FilterChainFactory.filters = Lists.newArrayList();
             return;
@@ -61,7 +66,7 @@ public class FilterChainFactory {
         FilterChainFactory.filters = filters;
     }
 
-    private int getOrder(SSOFilter a) {
+    private int getOrder(SsoFilter a) {
         Order order = a.getClass().getAnnotation(Order.class);
         return order == null ? Integer.MAX_VALUE : order.value();
     }

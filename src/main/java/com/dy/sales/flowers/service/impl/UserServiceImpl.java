@@ -70,12 +70,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean register(UserQuery request) {
-        User mobileUser = this.getUserByMobile(request.getMobile());
+        User user = this.getUserByMobile(request.getMobile());
         //号码已被注册
-        if (Objects.nonNull(mobileUser)) {
+        if (Objects.nonNull(user)) {
             throw new BusinessException(ResultCode.MOBILE_REGISTERED);
         }
-        User user = new User();
+        if (StringUtils.isNotBlank(request.getName())) {
+            user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getName, request.getName()));
+            if (Objects.nonNull(user)) {
+                throw new BusinessException(ResultCode.USER_NAME_REGISTERED);
+            }
+        }
+        user = new User();
         user.setName(StringUtils.isBlank(request.getName()) ? UUID.randomUUID().toString().replace("-", "") : request.getName());
         user.setMobile(request.getMobile());
         user.setAdmin(false);

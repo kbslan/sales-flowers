@@ -2,10 +2,11 @@ package com.dy.sales.flowers.config.filter.impl;
 
 
 import com.dy.sales.flowers.config.LoginConfig;
-import com.dy.sales.flowers.config.filter.SSOFilter;
-import com.dy.sales.flowers.vo.constant.SsoConstants;
+import com.dy.sales.flowers.config.filter.SsoFilter;
 import com.dy.sales.flowers.utils.CookieUtils;
+import com.dy.sales.flowers.vo.constant.SsoConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,11 +22,12 @@ import java.io.IOException;
 
 /**
  * cookie续期
+ * @author chao.lan
  */
 @Slf4j
 @Component
 @Order(5)
-public class CookieRenewalFilter implements SSOFilter {
+public class CookieRenewalFilter implements SsoFilter {
 
     @Resource
     private LoginConfig loginConfig;
@@ -36,15 +37,12 @@ public class CookieRenewalFilter implements SSOFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        Cookie cookie = CookieUtils.getCookie(request, SsoConstants.COOKIE_NAME);
+        String token = CookieUtils.getTokenValue(request, SsoConstants.COOKIE_NAME);
         if (loginConfig.isRenewal()) {
-            assert cookie != null;
+            assert StringUtils.isNotBlank(token);
             //cookie是否续期
             if (loginConfig.isRenewal()) {
-                CookieUtils.set(response, SsoConstants.COOKIE_NAME,
-                        cookie.getValue(), SsoConstants.COOKIE_DOMAIN,
-                        SsoConstants.COOKIE_PATH, SsoConstants.MAX_AGE,
-                        Boolean.TRUE, SsoConstants.SECURE);
+                CookieUtils.set(response, SsoConstants.COOKIE_NAME, token, SsoConstants.COOKIE_DOMAIN, SsoConstants.COOKIE_PATH, SsoConstants.MAX_AGE, Boolean.TRUE, SsoConstants.SECURE);
                 addCookie(request, response);
             }
         }

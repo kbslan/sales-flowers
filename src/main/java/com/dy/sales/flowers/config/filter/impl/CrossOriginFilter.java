@@ -1,6 +1,6 @@
 package com.dy.sales.flowers.config.filter.impl;
 
-import com.dy.sales.flowers.config.filter.SSOFilter;
+import com.dy.sales.flowers.config.filter.SsoFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
@@ -16,11 +16,12 @@ import java.io.IOException;
 
 /**
  * 跨域设置
+ * @author chao.lan
  */
 @Slf4j
 @Component
 @Order(1)
-public class CrossOriginFilter implements SSOFilter {
+public class CrossOriginFilter implements SsoFilter {
 
 
     @Override

@@ -1,7 +1,7 @@
 package com.dy.sales.flowers.config.filter.impl;
 
 
-import com.dy.sales.flowers.config.filter.SSOFilter;
+import com.dy.sales.flowers.config.filter.SsoFilter;
 import com.dy.sales.flowers.exception.LoginException;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.constant.SsoConstants;
@@ -19,7 +19,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,11 +27,12 @@ import java.util.Objects;
 
 /**
  * token有效性验证
+ * @author chao.lan
  */
 @Slf4j
 @Component
 @Order(3)
-public class AuthTokenFilter implements SSOFilter {
+public class AuthTokenFilter implements SsoFilter {
     @Resource
     private AuthService authService;
 
@@ -41,14 +41,10 @@ public class AuthTokenFilter implements SSOFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String token = ((HttpServletRequest) servletRequest).getHeader(SsoConstants.COOKIE_NAME);
+        String token = CookieUtils.getTokenValue(request, SsoConstants.COOKIE_NAME);
 
         if (StringUtils.isBlank(token)) {
-            Cookie cookie = CookieUtils.getCookie(request, SsoConstants.COOKIE_NAME);
-            if (Objects.isNull(cookie)) {
-                throw new LoginException(ResultCode.COOKIE_NOT_EXIST);
-            }
-            token = cookie.getValue();
+            throw new LoginException(ResultCode.COOKIE_NOT_EXIST);
         }
 
         try {

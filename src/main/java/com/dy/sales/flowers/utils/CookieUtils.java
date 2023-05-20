@@ -7,10 +7,29 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Objects;
 
 
+/**
+ * cookie 工具类
+ *
+ * @author chao.lan
+ */
 @Slf4j
 public class CookieUtils {
+
+
+    /**
+     * 获取令牌值， 先从header获取，没有获取到再从cookie中获取
+     */
+    public static String getTokenValue(HttpServletRequest request, String tokenName) {
+        String token = request.getHeader(tokenName);
+        if (StringUtils.isNotBlank(token)) {
+            return token;
+        }
+        Cookie cookie = getCookie(request, tokenName);
+        return Objects.isNull(cookie) ? null : cookie.getValue();
+    }
 
     public static Cookie getCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
