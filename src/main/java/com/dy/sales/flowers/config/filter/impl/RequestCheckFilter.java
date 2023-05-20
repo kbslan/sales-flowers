@@ -6,6 +6,7 @@ import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.constant.SsoConstants;
 import com.dy.sales.flowers.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 
 /**
@@ -32,12 +34,17 @@ public class RequestCheckFilter implements SSOFilter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        Cookie cookie = CookieUtils.getCookie(request, SsoConstants.COOKIE_NAME);
-        //校验cookie是否存在
-        if (cookie == null) {
-            log.error("cookieName:{} 不存在", SsoConstants.COOKIE_NAME);
-            throw new LoginException(ResultCode.COOKIE_NOT_EXIST);
+
+        String token = ((HttpServletRequest) servletRequest).getHeader(SsoConstants.COOKIE_NAME);
+        if (StringUtils.isBlank(token)) {
+            Cookie cookie = CookieUtils.getCookie(request, SsoConstants.COOKIE_NAME);
+            //校验cookie是否存在
+            if (Objects.isNull(cookie)) {
+                log.error("cookieName:{} 不存在", SsoConstants.COOKIE_NAME);
+                throw new LoginException(ResultCode.COOKIE_NOT_EXIST);
+            }
         }
+
         filterChain.doFilter(request, response);
     }
 }

@@ -10,6 +10,7 @@ import com.dy.sales.flowers.vo.response.UserModel;
 import com.dy.sales.flowers.service.AuthService;
 import com.dy.sales.flowers.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -40,11 +41,16 @@ public class AuthTokenFilter implements SSOFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        Cookie cookie = CookieUtils.getCookie(request, SsoConstants.COOKIE_NAME);
-        if (Objects.isNull(cookie)) {
-            throw new LoginException(ResultCode.COOKIE_NOT_EXIST);
+        String token = ((HttpServletRequest) servletRequest).getHeader(SsoConstants.COOKIE_NAME);
+
+        if (StringUtils.isBlank(token)) {
+            Cookie cookie = CookieUtils.getCookie(request, SsoConstants.COOKIE_NAME);
+            if (Objects.isNull(cookie)) {
+                throw new LoginException(ResultCode.COOKIE_NOT_EXIST);
+            }
+            token = cookie.getValue();
         }
-        String token = cookie.getValue();
+
         try {
             UserModel userModel = authService.authToken(token);
             if (Objects.isNull(userModel)) {
