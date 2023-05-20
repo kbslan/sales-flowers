@@ -67,7 +67,7 @@ public class UserController {
      * @param user 当前用户信息
      * @return 结果
      */
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public HttpResult<Void> logout(@CurrentUser User user, HttpServletResponse response) {
         userService.logout(user);
         log.info("用户退出登录：{}", user);
