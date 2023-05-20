@@ -1,4 +1,4 @@
-package com.dy.sales.flowers.web.health;
+package com.dy.sales.flowers.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

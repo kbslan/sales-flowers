@@ -14,13 +14,14 @@ import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.HttpResult;
 import com.dy.sales.flowers.vo.response.UserModel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -110,13 +111,20 @@ public class UserController {
 
     /**
      * 用户删除接口
+     *
+     * @param ids  用户ids(多个用逗号分隔)
+     * @param user 当前用户信息
+     * @return 结果
      */
     @GetMapping("/delete")
-    public HttpResult<Boolean> delete(@RequestParam("ids") List<Long> ids, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
-        if (CollectionUtils.isEmpty(ids)) {
+    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
+        if (StringUtils.isBlank(ids)) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
-        boolean success = userService.deletes(ids, user);
+        boolean success = userService.deletes(Arrays.stream(ids.split(","))
+                .map(Long::parseLong)
+                .collect(Collectors.toList()),
+                user);
         return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
