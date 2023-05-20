@@ -91,7 +91,7 @@ public class UserController {
     @PostMapping("/password/reset")
     public HttpResult<Boolean> resetPassword(@RequestBody UserQuery request, @CurrentUser User user) {
         //是否是本人修改密码
-        if (Objects.equals(request.getMobile(), user.getMobile())) {
+        if (!Objects.equals(request.getMobile(), user.getMobile())) {
             log.error("重置密码失败，非本人操作 request.mobile={} user.mobile={}", request.getMobile(), user.getMobile());
             return HttpResult.failed(ResultCode.RESET_PASSWORD_FAILED);
         }
