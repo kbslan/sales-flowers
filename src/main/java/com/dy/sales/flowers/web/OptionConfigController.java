@@ -33,7 +33,7 @@ public class OptionConfigController {
     private OptionConfigService optionConfigService;
 
     /**
-     * 用户列表查询
+     * 列表查询
      */
     @PostMapping("/page")
     public HttpResult<Page<OptionConfig>> page(@RequestBody OptionQuery request, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
@@ -41,7 +41,7 @@ public class OptionConfigController {
     }
 
     /**
-     * 用户删除接口
+     * 逻辑删除
      *
      * @param ids  用户ids(多个用逗号分隔)
      * @param user 当前用户信息

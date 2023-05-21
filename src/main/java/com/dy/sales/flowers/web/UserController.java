@@ -110,7 +110,7 @@ public class UserController {
     }
 
     /**
-     * 用户删除接口
+     * 逻辑删除
      *
      * @param ids  用户ids(多个用逗号分隔)
      * @param user 当前用户信息
