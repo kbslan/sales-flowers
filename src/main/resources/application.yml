@@ -3,6 +3,9 @@ server:
 spring:
   profiles:
     active: test
+  jwtAuth:
+    #jwt 秘钥
+    secretKey: a0a2abd8-6162-41c3-83d6-1cf559b46afc
 log:
   additivity: fasle
   level: INFO

@@ -97,7 +97,7 @@ public class UserController {
             return HttpResult.failed(ResultCode.RESET_PASSWORD_FAILED);
         }
 
-        boolean success = userService.resetPassword(request);
+        boolean success = userService.resetPassword(request, user);
         return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
@@ -105,7 +105,7 @@ public class UserController {
      * 用户列表查询
      */
     @PostMapping("/page")
-    public HttpResult<Page<User>> page(@RequestBody UserQuery request, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
+    public HttpResult<Page<User>> page(@RequestBody UserQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         return HttpResult.success(userService.pageQuery(request));
     }
 
@@ -117,7 +117,7 @@ public class UserController {
      * @return 结果
      */
     @GetMapping("/delete")
-    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
+    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         if (StringUtils.isBlank(ids)) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }

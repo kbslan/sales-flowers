@@ -8,7 +8,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Created by lan_c on 2019/1/3.
+ *
+ * @author lan_c
+ * @date 2019/1/3
  */
 public class HS256 {
 

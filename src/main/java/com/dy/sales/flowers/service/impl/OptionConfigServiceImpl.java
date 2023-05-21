@@ -44,7 +44,7 @@ public class OptionConfigServiceImpl extends ServiceImpl<OptionConfigMapper, Opt
                 Wrappers.<OptionConfig>lambdaQuery()
                         .eq(OptionConfig::getType, request.getType())
                         .like(StringUtils.isNotBlank(request.getLabel()), OptionConfig::getLabel, request.getLabel())
-                        .eq(OptionConfig::getYn, request.getYn())
+                        .eq(OptionConfig::getYn, Objects.isNull(request.getYn()) ? YNEnum.YES.getCode() : request.getYn())
                         .orderByDesc(Arrays.asList(OptionConfig::getType, OptionConfig::getModified))
         );
     }

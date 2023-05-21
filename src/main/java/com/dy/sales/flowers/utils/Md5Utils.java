@@ -7,6 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 
+/**
+ * @author chao.lan
+ */
 @Slf4j
 public class Md5Utils {
 

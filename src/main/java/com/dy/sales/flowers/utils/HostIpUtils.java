@@ -1,5 +1,8 @@
 package com.dy.sales.flowers.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -8,13 +11,10 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * 获取本机有效IP地址
  *
- * @author dmall
+ * @author chao.lan
  */
 public class HostIpUtils {
     private final static Logger LOGGER = LoggerFactory.getLogger(HostIpUtils.class);

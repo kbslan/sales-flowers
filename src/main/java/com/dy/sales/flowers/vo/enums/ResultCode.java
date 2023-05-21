@@ -20,7 +20,7 @@ public enum ResultCode {
     /**
      * 异常状态码
      */
-    SYS_EXCEPTION("1000", "未知系统异常"),
+    SYS_EXCEPTION("1000", "系统异常"),
     PARAM_EXCEPTION("1001", "参数缺失"),
     MOBILE_REGISTERED("1002", "手机号已被注册"),
     USER_NAME_REGISTERED("1003", "账号名称已被使用"),

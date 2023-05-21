@@ -4,6 +4,9 @@ import com.dy.sales.flowers.vo.constant.SsoConstants;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author chao.lan
+ */
 public class RedirectUrlUtils {
 
     private static final String HTTPS = "https://";

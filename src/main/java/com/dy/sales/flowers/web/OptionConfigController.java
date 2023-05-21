@@ -36,7 +36,7 @@ public class OptionConfigController {
      * 列表查询
      */
     @PostMapping("/page")
-    public HttpResult<Page<OptionConfig>> page(@RequestBody OptionQuery request, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
+    public HttpResult<Page<OptionConfig>> page(@RequestBody OptionQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         return HttpResult.success(optionConfigService.pageQuery(request));
     }
 
@@ -48,7 +48,7 @@ public class OptionConfigController {
      * @return 结果
      */
     @GetMapping("/delete")
-    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
+    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         if (StringUtils.isBlank(ids)) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
@@ -65,7 +65,7 @@ public class OptionConfigController {
      * @return 结果
      */
     @PostMapping("/save")
-    public HttpResult<Boolean> save(@RequestBody OptionQuery request, @CurrentUser(permission = PermissionConstants.ADMIN_USER_PERMISSION) User user) {
+    public HttpResult<Boolean> save(@RequestBody OptionQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         return HttpResult.success(optionConfigService.saveOption(request, user));
     }
 

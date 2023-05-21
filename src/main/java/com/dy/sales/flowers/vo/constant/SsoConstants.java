@@ -2,6 +2,8 @@ package com.dy.sales.flowers.vo.constant;
 
 /**
  * 登陆相关常量
+ *
+ * @author chao.lan
  */
 public class SsoConstants {
 
@@ -22,8 +24,6 @@ public class SsoConstants {
     public static final String LOGIN_DOMAIN = "";
 
     public static final Boolean SECURE = true;
-
-
 
 
 }

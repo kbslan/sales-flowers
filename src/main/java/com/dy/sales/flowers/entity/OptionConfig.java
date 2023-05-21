@@ -1,9 +1,6 @@
 package com.dy.sales.flowers.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.dy.sales.flowers.vo.enums.OptionEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,19 +55,19 @@ public class OptionConfig implements Serializable {
     /**
      * 创建人ID
      */
-    @TableField("creator_id")
+    @TableField(value = "creator_id", updateStrategy = FieldStrategy.NEVER)
     private Long creatorId;
 
     /**
      * 创建人名称
      */
-    @TableField("creator_name")
+    @TableField(value = "creator_name", updateStrategy = FieldStrategy.NEVER)
     private String creatorName;
 
     /**
      * 创建时间
      */
-    @TableField("created")
+    @TableField(value = "created", updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime created;
 
     /**

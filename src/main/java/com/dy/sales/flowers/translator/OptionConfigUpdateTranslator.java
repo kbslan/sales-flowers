@@ -28,7 +28,7 @@ public class OptionConfigUpdateTranslator implements BiFunction<OptionQuery, Use
         Assert.notNull(request.getLabel(), "配置名称为空");
         Assert.notNull(request.getValue(), "配置值为空");
 
-        OptionConfig optionConfig = new OptionConfig();
+        OptionConfig update = new OptionConfig();
         OptionEnum optionEnum = OptionEnum.get(request.getType());
         if (Objects.isNull(optionEnum)) {
             throw new BusinessException(ResultCode.PARAM_EXCEPTION);
@@ -37,15 +37,15 @@ public class OptionConfigUpdateTranslator implements BiFunction<OptionQuery, Use
         if (Objects.isNull(ynEnum)) {
             throw new BusinessException(ResultCode.PARAM_EXCEPTION);
         }
-        optionConfig.setId(request.getId());
-        optionConfig.setType(optionEnum.getCode());
-        optionConfig.setLabel(request.getLabel());
-        optionConfig.setValue(request.getValue());
-        optionConfig.setYn(ynEnum.getCode());
-        optionConfig.setModifierId(user.getId());
-        optionConfig.setModifierName(user.getName());
-        optionConfig.setModified(LocalDateTime.now());
+        update.setId(request.getId());
+        update.setType(optionEnum.getCode());
+        update.setLabel(request.getLabel());
+        update.setValue(request.getValue());
+        update.setYn(ynEnum.getCode());
+        update.setModifierId(user.getId());
+        update.setModifierName(user.getName());
+        update.setModified(LocalDateTime.now());
 
-        return optionConfig;
+        return update;
     }
 }

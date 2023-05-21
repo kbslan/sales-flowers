@@ -27,26 +27,22 @@ public class OptionConfigInsertTranslator implements BiFunction<OptionQuery, Use
         Assert.notNull(request.getLabel(), "配置名称为空");
         Assert.notNull(request.getValue(), "配置值为空");
 
-        OptionConfig optionConfig = new OptionConfig();
+        OptionConfig entity = new OptionConfig();
         OptionEnum optionEnum = OptionEnum.get(request.getType());
         if (Objects.isNull(optionEnum)) {
             throw new BusinessException(ResultCode.PARAM_EXCEPTION);
         }
-        YNEnum ynEnum = YNEnum.get(request.getYn());
-        if (Objects.isNull(ynEnum)) {
-            throw new BusinessException(ResultCode.PARAM_EXCEPTION);
-        }
-        optionConfig.setType(optionEnum.getCode());
-        optionConfig.setLabel(request.getLabel());
-        optionConfig.setValue(request.getValue());
-        optionConfig.setYn(ynEnum.getCode());
-        optionConfig.setCreatorId(user.getId());
-        optionConfig.setCreatorName(user.getName());
-        optionConfig.setCreated(LocalDateTime.now());
-        optionConfig.setModifierId(user.getId());
-        optionConfig.setModifierName(user.getName());
-        optionConfig.setModified(LocalDateTime.now());
+        entity.setType(optionEnum.getCode());
+        entity.setLabel(request.getLabel());
+        entity.setValue(request.getValue());
+        entity.setYn(YNEnum.YES.getCode());
+        entity.setCreatorId(user.getId());
+        entity.setCreatorName(user.getName());
+        entity.setCreated(LocalDateTime.now());
+        entity.setModifierId(user.getId());
+        entity.setModifierName(user.getName());
+        entity.setModified(LocalDateTime.now());
 
-        return optionConfig;
+        return entity;
     }
 }

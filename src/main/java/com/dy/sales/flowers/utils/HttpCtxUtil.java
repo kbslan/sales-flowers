@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * HttpRequest工具类
  *
+ * @author chao.lan
  */
 @Slf4j
 public class HttpCtxUtil {

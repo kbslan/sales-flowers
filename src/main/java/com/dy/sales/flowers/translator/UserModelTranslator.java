@@ -18,17 +18,18 @@ public class UserModelTranslator implements Function<User, UserModel> {
 
     @Override
     public UserModel apply(User user) {
-        UserModel userModel = new UserModel();
-        userModel.setId(user.getId());
-        userModel.setName(user.getName());
-        userModel.setMobile(user.getMobile());
-        userModel.setYn(user.getYn());
-        userModel.setUuid(MDC.get("trace"));
-        userModel.setLoginTime(System.currentTimeMillis());
-        userModel.setAdmin(user.isAdmin());
+        UserModel model = new UserModel();
+        model.setId(user.getId());
+        model.setName(user.getName());
+        model.setMobile(user.getMobile());
+        model.setYn(user.getYn());
+        model.setUuid(MDC.get("trace"));
+        model.setLoginTime(System.currentTimeMillis());
+        model.setAdmin(user.isAdmin());
         if (user.isAdmin()) {
-            userModel.setPermission(PermissionConstants.ADMIN_USER_PERMISSION);
+            //权限
+            model.setPermission(PermissionConstants.ADMIN);
         }
-        return userModel;
+        return model;
     }
 }

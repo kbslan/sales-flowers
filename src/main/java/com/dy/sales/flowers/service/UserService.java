@@ -55,9 +55,10 @@ public interface UserService extends IService<User> {
      * 重置密码
      *
      * @param request 参数
+     * @param user    操作人信息
      * @return 成功、失败
      */
-    boolean resetPassword(UserQuery request);
+    boolean resetPassword(UserQuery request, User user);
 
     /**
      * 分页查询

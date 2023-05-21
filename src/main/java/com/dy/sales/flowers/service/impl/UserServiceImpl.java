@@ -90,6 +90,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPassword(request.getPassword());
         user.setYn(YNEnum.YES.getCode());
         user.setCreated(LocalDateTime.now());
+        user.setCreatorId(-1L);
+        user.setCreatorName("register");
+        user.setModifierId(-1L);
+        user.setModifierName("register");
         user.setModified(LocalDateTime.now());
         user.setSalt("");
 
@@ -97,19 +101,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean resetPassword(UserQuery request) {
-        User user = this.getUserByMobile(request.getMobile());
+    public boolean resetPassword(UserQuery request, User user) {
+        User dbUser = this.getUserByMobile(request.getMobile());
         //用户不存在
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(dbUser)) {
             throw new LoginException(ResultCode.USER_NOT_FOUND);
         }
         //旧密码不一致
-        if (!Objects.equals(request.getOldPassword(), user.getPassword())) {
+        if (!Objects.equals(request.getOldPassword(), dbUser.getPassword())) {
             throw new LoginException(ResultCode.RESET_PASSWORD_NOT_EQUAL);
         }
-        user.setPassword(request.getPassword());
-        user.setModified(LocalDateTime.now());
-        return this.updateById(user);
+        dbUser.setPassword(request.getPassword());
+        dbUser.setModified(LocalDateTime.now());
+        dbUser.setModifierId(user.getId());
+        dbUser.setModifierName(user.getName());
+        return this.updateById(dbUser);
     }
 
     @Override
@@ -118,7 +124,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 Wrappers.<User>lambdaQuery()
                         .like(StringUtils.isNotBlank(request.getName()), User::getName, request.getName())
                         .like(StringUtils.isNotBlank(request.getMobile()), User::getMobile, request.getMobile())
-                        .eq(User::getYn, Objects.requireNonNull(YNEnum.get(request.getYn())).getCode())
+                        .eq(User::getYn, Objects.isNull(request.getYn()) ? YNEnum.YES.getCode() : request.getYn())
                         .orderByDesc(User::getModified)
 
         );
@@ -132,6 +138,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 update.setId(id);
                 update.setYn(YNEnum.NO.getCode());
                 update.setModified(LocalDateTime.now());
+                update.setModifierId(user.getId());
+                update.setModifierName(user.getName());
                 return update;
             }).collect(Collectors.toList()), 200);
         }

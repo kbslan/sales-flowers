@@ -8,7 +8,6 @@ import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.response.UserContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
-import org.springframework.scheduling.concurrent.ScheduledExecutorTask;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -81,7 +80,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         } else {
             Set<String> permissionSet = new HashSet<>(Arrays.asList(userPermission.split(",")));
             //超级管理员
-            if (permissionSet.contains(PermissionConstants.ADMIN_USER_PERMISSION)) {
+            if (permissionSet.contains(PermissionConstants.ADMIN)) {
                 return true;
             }
             for (String item : needPermission.split(",")) {

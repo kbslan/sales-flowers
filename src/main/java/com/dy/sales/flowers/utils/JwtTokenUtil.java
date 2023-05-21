@@ -9,20 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by lan_c on 2019/1/3.
+ *
+ * @author lan_c
+ * @date 2019/1/3
  */
 @Slf4j
 public class JwtTokenUtil {
-    /**
-     * 秘钥
-     */
-    private static final String SECRET_KEY = "a0a2abd8-6162-41c3-83d6-1cf559b46afc";
-
 
     /**
      * 加密
      */
-    public static String encode(String str) {
+    public static String encode(String secretKey, String str) {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("typ", "JWT");
         headerMap.put("alg", "HS256");
@@ -38,7 +35,7 @@ public class JwtTokenUtil {
                 return null;
             } else {
                 String signatureOrigin = headerBase64 + "." + payloadBase64;
-                String signature = HS256.sign(SECRET_KEY, signatureOrigin);
+                String signature = HS256.sign(secretKey, signatureOrigin);
                 if (signature == null) {
                     log.error("JwtTokenUtil signature failed:{}", signatureOrigin);
                     return null;
@@ -75,7 +72,7 @@ public class JwtTokenUtil {
     /**
      * 校验是否是自己生成的token
      */
-    public static boolean isMyToken(String token) {
+    public static boolean isMyToken(String secretKey, String token) {
         if (StringUtils.isNotBlank(token)) {
             String[] components = token.split("\\.");
             if (components.length == 3) {
@@ -83,7 +80,7 @@ public class JwtTokenUtil {
                 String payloadBase64 = components[1];
                 String signature = components[2];
                 String signatureOrigin = headerBase64 + "." + payloadBase64;
-                String signatureVerified = HS256.sign(SECRET_KEY, signatureOrigin);
+                String signatureVerified = HS256.sign(secretKey, signatureOrigin);
                 if (StringUtils.isNotBlank(signatureVerified)) {
                     //签名是否一致
                     return signatureVerified.equals(signature);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 浏览器信息工具类
  *
+ * @author chao.lan
  */
 public class UserAgentUtils {
 

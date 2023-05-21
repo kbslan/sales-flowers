@@ -1,7 +1,6 @@
 package com.dy.sales.flowers.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.dy.sales.flowers.vo.enums.YNEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -11,52 +10,68 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 账号
+ * 包花记录
  * </p>
  *
  * @author chao.lan
- * @since 2023-05-20
+ * @since 2023-05-21
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("user")
-public class User implements Serializable {
-    private static final long serialVersionUID = -5820758145443805098L;
+@TableName("bag_flower_record")
+public class BagFlowerRecord implements Serializable {
 
-    /**
-     * 主键
-     */
+    private static final long serialVersionUID = 1956217935346879491L;
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 昵称
+     * 包花人ID
      */
-    @TableField("name")
-    private String name;
+    @TableField(value = "bag_id", updateStrategy = FieldStrategy.NEVER)
+    private Long bagId;
 
     /**
-     * 电话号码
+     * 采花人ID
      */
-    @TableField("mobile")
-    private String mobile;
+    @TableField("picker_id")
+    private Long pickerId;
 
     /**
-     * 是否是管理员
+     * 品种ID
      */
-    @TableField("admin")
-    private boolean admin;
+    @TableField("category_id")
+    private Long categoryId;
 
     /**
-     * 密码, 暂时先明文，后续有需要再改造
+     * 规格ID
      */
-    @TableField("password")
-    private String password;
+    @TableField("specification_id")
+    private Long specificationId;
 
     /**
-     * 状态 1: 启用, 0: 禁用
-     * @see YNEnum
+     * 损坏原因ID
+     */
+    @TableField("damage_reason_id")
+    private Long damageReasonId;
+
+    /**
+     * 包花数量
+     */
+    @TableField("bag_amount")
+    private Long bagAmount;
+
+    /**
+     * 损坏数量
+     */
+    @TableField("damage_amount")
+    private Long damageAmount;
+
+    /**
+     * 状态 1: 审核通过, 0: 提报中, -1: 删除
+     * @see com.dy.sales.flowers.vo.enums.YNEnum
      */
     @TableField("yn")
     private Integer yn;
@@ -96,18 +111,6 @@ public class User implements Serializable {
      */
     @TableField("modified")
     private LocalDateTime modified;
-
-    /**
-     * 密码salt
-     */
-    @TableField("salt")
-    private String salt;
-
-    /**
-     * 权限，逗号分隔
-     */
-    @TableField(exist = false)
-    private String permission;
 
 
 }
