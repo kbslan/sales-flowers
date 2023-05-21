@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("user")
 public class User implements Serializable {
-
+    private static final long serialVersionUID = -5820758145443805098L;
 
     /**
      * 主键

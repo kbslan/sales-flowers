@@ -122,14 +122,18 @@ public class UserController {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
         boolean success = userService.deletes(Arrays.stream(ids.split(","))
-                .map(Long::parseLong)
-                .collect(Collectors.toList()),
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList()),
                 user);
         return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
     /**
      * 用户信息查询接口
+     *
+     * @param id   用户ID。不传则查询当前用户信息
+     * @param user 当前用户信息
+     * @return 用户信息
      */
     @GetMapping("/info")
     public HttpResult<UserModel> info(@RequestParam(name = "id", required = false) Long id, @CurrentUser User user) {
