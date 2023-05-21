@@ -112,7 +112,7 @@ public class UserController {
     /**
      * 逻辑删除
      *
-     * @param ids  用户ids(多个用逗号分隔)
+     * @param ids  ids(多个用逗号分隔)
      * @param user 当前用户信息
      * @return 结果
      */
