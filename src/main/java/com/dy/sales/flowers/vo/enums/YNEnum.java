@@ -3,6 +3,11 @@ package com.dy.sales.flowers.vo.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /**
  * 状态枚举
  * @author chao.lan
@@ -11,13 +16,16 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum YNEnum {
     /**
-     * 启用、有效
+     * 有效
      */
-    YES(1, "启用"),
+    YES(1, "有效"),
+
     /**
-     * 禁用、无效
+     * 无效
      */
-    NO(0, "禁用");
+    NO(0, "无效"),
+
+    ;
 
     /**
      * 编码
@@ -27,4 +35,17 @@ public enum YNEnum {
      * 描述
      */
     private final String desc;
+
+    /**
+     * 枚举缓存
+     */
+    private static final Map<Integer, YNEnum> CACHE;
+
+    static {
+        CACHE = Arrays.stream(values()).collect(Collectors.toMap(YNEnum::getCode, Function.identity()));
+    }
+
+    public static YNEnum get(Integer code) {
+        return CACHE.get(code);
+    }
 }

@@ -32,6 +32,7 @@ public interface UserService extends IService<User> {
      *
      * @param request 登陆参数
      * @return 登陆成功返回用户对象，否则为null
+     * @throws LoginException 登陆异常
      */
     UserModel login(UserQuery request) throws LoginException;
 
@@ -54,7 +55,7 @@ public interface UserService extends IService<User> {
      * 重置密码
      *
      * @param request 参数
-     * @return
+     * @return 成功、失败
      */
     boolean resetPassword(UserQuery request);
 
@@ -71,6 +72,7 @@ public interface UserService extends IService<User> {
      *
      * @param ids  用户ID列表
      * @param user 操作人信息
+     * @return 结果
      */
     boolean deletes(List<Long> ids, User user);
 }

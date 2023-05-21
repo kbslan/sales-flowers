@@ -1,32 +1,30 @@
 package com.dy.sales.flowers.service.impl;
 
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.exception.BusinessException;
 import com.dy.sales.flowers.exception.LoginException;
 import com.dy.sales.flowers.mapper.UserMapper;
+import com.dy.sales.flowers.service.UserService;
+import com.dy.sales.flowers.translator.UserModelTranslator;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.UserModel;
-import com.dy.sales.flowers.service.UserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dy.sales.flowers.translator.UserModelTranslator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static net.sf.jsqlparser.parser.feature.Feature.insert;
 
 /**
  * <p>
@@ -59,13 +57,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!Objects.equals(request.getPassword(), user.getPassword())) {
             throw new LoginException(ResultCode.USER_PASSWORD_ERROR);
         }
+        //账号禁用
+        if (!Objects.equals(user.getYn(), YNEnum.YES.getCode())) {
+            throw new LoginException(ResultCode.USER_DISABLED);
+        }
         //校验通过，转换对象，减少暴露信息
         return userModelTranslator.apply(user);
     }
 
     @Override
     public void logout(User user) {
-
+        //ignore
     }
 
     @Override
@@ -116,7 +118,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 Wrappers.<User>lambdaQuery()
                         .like(StringUtils.isNotBlank(request.getName()), User::getName, request.getName())
                         .like(StringUtils.isNotBlank(request.getMobile()), User::getMobile, request.getMobile())
-                        .eq(User::getYn, Objects.isNull(request.getYn()) ? YNEnum.YES.getCode() : request.getYn())
+                        .eq(User::getYn, Objects.requireNonNull(YNEnum.get(request.getYn())).getCode())
                         .orderByDesc(User::getModified)
 
         );

@@ -121,10 +121,7 @@ public class UserController {
         if (StringUtils.isBlank(ids)) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
-        boolean success = userService.deletes(Arrays.stream(ids.split(","))
-                        .map(Long::parseLong)
-                        .collect(Collectors.toList()),
-                user);
+        boolean success = userService.deletes(Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList()), user);
         return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 

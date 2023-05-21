@@ -1,5 +1,6 @@
 package com.dy.sales.flowers.vo.request;
 
+import com.dy.sales.flowers.vo.enums.YNEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,5 +36,5 @@ public class UserQuery extends PageQuery {
     /**
      * 状态
      */
-    private Integer yn;
+    private Integer yn = YNEnum.YES.getCode();
 }
