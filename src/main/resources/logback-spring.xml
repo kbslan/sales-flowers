@@ -2,7 +2,7 @@
 <configuration>
     <property name="localDateTime" value="%d{yyyy-MM-dd}"/>
     <property name="logPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%c] [%X{trace}] - %m%n"/>
-    <property name="logPath" value="/web/logs/app/${AMP_PRO_CODE}/${AMP_APP_CODE}/${INSTANCE_CODE}"/>
+    <property name="logPath" value="/web/logs/app/sales-flowers/"/>
     <property name="charSet" value="UTF-8"/>
     <property name="maxHistory" value="7"/>
 
