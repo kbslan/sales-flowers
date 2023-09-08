@@ -57,6 +57,8 @@ public class UserModel {
      */
     private String permission;
 
+    private String token;
+
     /**
      * 是否超过有效期
      *

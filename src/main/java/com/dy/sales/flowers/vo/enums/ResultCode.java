@@ -35,10 +35,10 @@ public enum ResultCode {
     COOKIE_EXPIRED("1012", "token已过期，请重新登陆"),
     NOT_LOGIN_IP("1013", "当前设备ip非登录ip"),
     USER_AGENT_ERROR("1014", "userAgent错误"),
-    REQUEST_ILLEGAL("1015", "权限不足")
+    REQUEST_ILLEGAL("1015", "权限不足"),
 
-
-    ;
+    MOBILE_EMPTY("1016", "手机号码为空"),
+    PASSWORD_MISSING("1017", "密码不能为空");
 
     /**
      * 编码

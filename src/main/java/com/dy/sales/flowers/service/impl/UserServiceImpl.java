@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -36,12 +37,15 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    //11位手机号码校验
+    private static final Pattern MOBILE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
     @Resource
     private UserModelTranslator userModelTranslator;
 
     @Override
     public User getUserByMobile(String mobile) {
         Assert.hasLength(mobile, "手机号码为空");
+        Assert.isTrue(MOBILE_PATTERN.matcher(mobile).matches(), "手机号码格式错误");
         return this.getOne(Wrappers.<User>lambdaQuery().eq(User::getMobile, mobile));
     }
 
@@ -71,8 +75,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean register(UserQuery request) {
-        User user = this.getUserByMobile(request.getMobile());
+    public UserModel register(UserQuery request) {
+        String mobile = StringUtils.isBlank(request.getMobile()) ? null : request.getMobile().trim();
+        if (StringUtils.isBlank(mobile)) {
+            throw new BusinessException(ResultCode.MOBILE_EMPTY);
+        }
+        if (StringUtils.isBlank(request.getName())) {
+            request.setName(mobile);
+        }
+        if (StringUtils.isBlank(request.getPassword())) {
+            throw new BusinessException(ResultCode.PASSWORD_MISSING);
+        }
+        User user = this.getUserByMobile(mobile);
         //号码已被注册
         if (Objects.nonNull(user)) {
             throw new BusinessException(ResultCode.MOBILE_REGISTERED);
@@ -85,7 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         user = new User();
         user.setName(StringUtils.isBlank(request.getName()) ? UUID.randomUUID().toString().replace("-", "") : request.getName());
-        user.setMobile(request.getMobile());
+        user.setMobile(mobile);
         user.setAdmin(false);
         user.setPassword(request.getPassword());
         user.setYn(YNEnum.YES.getCode());
@@ -97,7 +111,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setModified(LocalDateTime.now());
         user.setSalt("");
 
-        return this.save(user);
+        boolean success = this.save(user);
+        if (success) {
+            return userModelTranslator.apply(user);
+        }
+        return null;
     }
 
     @Override

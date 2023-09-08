@@ -47,9 +47,9 @@ public interface UserService extends IService<User> {
      * 注册
      *
      * @param request 注册参数
-     * @return 是否成功
+     * @return 注册成功返回用户对象，否则为null
      */
-    boolean register(UserQuery request);
+    UserModel register(UserQuery request);
 
     /**
      * 重置密码

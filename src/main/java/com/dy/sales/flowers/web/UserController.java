@@ -6,9 +6,7 @@ import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.service.AuthService;
 import com.dy.sales.flowers.service.UserService;
 import com.dy.sales.flowers.translator.UserModelTranslator;
-import com.dy.sales.flowers.utils.CookieUtils;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
-import com.dy.sales.flowers.vo.constant.SsoConstants;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.HttpResult;
@@ -55,7 +53,7 @@ public class UserController {
         UserModel userModel = userService.login(request);
         if (Objects.nonNull(userModel)) {
             String token = authService.generatorToken(userModel);
-            CookieUtils.set(response, SsoConstants.COOKIE_NAME, token, SsoConstants.COOKIE_DOMAIN, SsoConstants.COOKIE_PATH, SsoConstants.MAX_AGE, Boolean.TRUE, SsoConstants.SECURE);
+            userModel.setToken(token);
         }
 
         return HttpResult.success(userModel);
@@ -72,7 +70,6 @@ public class UserController {
     public HttpResult<Void> logout(@CurrentUser User user, HttpServletResponse response) {
         userService.logout(user);
         log.info("用户退出登录：{}", user);
-        CookieUtils.set(response, SsoConstants.COOKIE_NAME, "", SsoConstants.COOKIE_DOMAIN, SsoConstants.COOKIE_PATH, 1, Boolean.TRUE, SsoConstants.SECURE);
         return HttpResult.success();
     }
 
@@ -81,8 +78,14 @@ public class UserController {
      * 用户注册接口
      */
     @PostMapping("/register")
-    public HttpResult<Boolean> register(@RequestBody UserQuery request) {
-        return HttpResult.success(userService.register(request));
+    public HttpResult<UserModel> register(@RequestBody UserQuery request, HttpServletResponse response) {
+        UserModel userModel = userService.register(request);
+        if (Objects.nonNull(userModel)) {
+            String token = authService.generatorToken(userModel);
+            userModel.setToken(token);
+            return HttpResult.success(userModel);
+        }
+        return HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
 
