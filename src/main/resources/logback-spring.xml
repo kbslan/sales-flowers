@@ -133,7 +133,6 @@
     </logger>
 
     <logger name="ShardingSphere-SQL" level="${log.sql.level}" additivity="false">
-        <appender-ref ref="ASYNC_SQL_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 

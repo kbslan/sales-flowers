@@ -6,6 +6,7 @@ import com.dy.sales.flowers.exception.BusinessException;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.response.UserContext;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户信息参数处理类
@@ -50,7 +48,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         user.setMobile(context.getMobile());
         user.setYn(context.getYn());
         user.setAdmin(context.isAdmin());
-        user.setPermission(context.getPermission());
+        user.setPermissions(context.getPermissions());
         //接口访问权限校验
         CurrentUser currentUser = parameter.getParameterAnnotation(CurrentUser.class);
         String permission = currentUser.permission();
@@ -74,17 +72,16 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         if (StringUtils.isBlank(needPermission)) {
             return true;
         }
-        String userPermission = currentUser.getPermission();
-        if (StringUtils.isBlank(userPermission)) {
+        List<String> userPermission = currentUser.getPermissions();
+        if (CollectionUtils.isEmpty(userPermission)) {
             return false;
         } else {
-            Set<String> permissionSet = new HashSet<>(Arrays.asList(userPermission.split(",")));
             //超级管理员
-            if (permissionSet.contains(PermissionConstants.ADMIN)) {
+            if (userPermission.contains(PermissionConstants.ADMIN)) {
                 return true;
             }
             for (String item : needPermission.split(",")) {
-                if (permissionSet.contains(item)) {
+                if (userPermission.contains(item)) {
                     return true;
                 }
             }

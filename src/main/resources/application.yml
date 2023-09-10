@@ -11,3 +11,6 @@ log:
   level: INFO
   sql:
     level: INFO
+logging:
+  level:
+    com.dy.sales.flowers.mapper: debug

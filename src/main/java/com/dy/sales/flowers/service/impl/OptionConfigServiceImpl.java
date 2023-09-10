@@ -10,6 +10,7 @@ import com.dy.sales.flowers.service.OptionConfigService;
 import com.dy.sales.flowers.translator.OptionConfigInsertTranslator;
 import com.dy.sales.flowers.translator.OptionConfigUpdateTranslator;
 import com.dy.sales.flowers.vo.enums.YNEnum;
+import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.OptionQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -50,15 +51,18 @@ public class OptionConfigServiceImpl extends ServiceImpl<OptionConfigMapper, Opt
     }
 
     @Override
-    public boolean deletes(List<Long> ids, User user) {
-        if (CollectionUtils.isNotEmpty(ids)) {
-            return this.updateBatchById(ids.stream().map(id -> {
-                OptionConfig update = new OptionConfig();
-                update.setId(id);
-                update.setYn(YNEnum.NO.getCode());
-                update.setModified(LocalDateTime.now());
-                return update;
-            }).collect(Collectors.toList()), 200);
+    public boolean changeYn(ChangeStatusParams request, User user) {
+        if (CollectionUtils.isNotEmpty(request.getIds())) {
+            return this.update(
+                    new OptionConfig()
+                            .setYn(request.getStatus())
+                            .setModified(LocalDateTime.now())
+                            .setModifierId(user.getId())
+                            .setModifierName(user.getName()),
+                    Wrappers.<OptionConfig>lambdaQuery()
+                            .in(OptionConfig::getId, request.getIds())
+            );
+
         }
         return false;
     }

@@ -9,8 +9,10 @@ import com.dy.sales.flowers.exception.LoginException;
 import com.dy.sales.flowers.mapper.UserMapper;
 import com.dy.sales.flowers.service.UserService;
 import com.dy.sales.flowers.translator.UserModelTranslator;
+import com.dy.sales.flowers.utils.PageUtils;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
+import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.UserModel;
 import org.apache.commons.collections4.CollectionUtils;
@@ -39,13 +41,17 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     //11位手机号码校验
     private static final Pattern MOBILE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
+
+    private static final String ADMIN = "admin";
     @Resource
     private UserModelTranslator userModelTranslator;
 
     @Override
     public User getUserByMobile(String mobile) {
         Assert.hasLength(mobile, "手机号码为空");
-        Assert.isTrue(MOBILE_PATTERN.matcher(mobile).matches(), "手机号码格式错误");
+        if (!Objects.equals(mobile, ADMIN) && !MOBILE_PATTERN.matcher(mobile).matches()) {
+            throw new BusinessException(ResultCode.MOBILE_ILLEGAL);
+        }
         return this.getOne(Wrappers.<User>lambdaQuery().eq(User::getMobile, mobile));
     }
 
@@ -75,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public UserModel register(UserQuery request) {
+    public Boolean register(UserQuery request) {
         String mobile = StringUtils.isBlank(request.getMobile()) ? null : request.getMobile().trim();
         if (StringUtils.isBlank(mobile)) {
             throw new BusinessException(ResultCode.MOBILE_EMPTY);
@@ -111,15 +117,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setModified(LocalDateTime.now());
         user.setSalt("");
 
-        boolean success = this.save(user);
-        if (success) {
-            return userModelTranslator.apply(user);
-        }
-        return null;
+        return this.save(user);
     }
 
     @Override
-    public boolean resetPassword(UserQuery request, User user) {
+    public Boolean resetPassword(UserQuery request) {
         User dbUser = this.getUserByMobile(request.getMobile());
         //用户不存在
         if (Objects.isNull(dbUser)) {
@@ -131,35 +133,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         dbUser.setPassword(request.getPassword());
         dbUser.setModified(LocalDateTime.now());
-        dbUser.setModifierId(user.getId());
-        dbUser.setModifierName(user.getName());
+        dbUser.setModifierId(dbUser.getId());
+        dbUser.setModifierName(dbUser.getName());
+
         return this.updateById(dbUser);
     }
 
     @Override
-    public Page<User> pageQuery(UserQuery request) {
-        return this.page(new Page<>(request.getPage(), request.getSize()),
+    public Page<UserModel> pageQuery(UserQuery request) {
+        Page<User> page = this.page(new Page<>(request.getPage(), request.getSize()),
                 Wrappers.<User>lambdaQuery()
                         .like(StringUtils.isNotBlank(request.getName()), User::getName, request.getName())
                         .like(StringUtils.isNotBlank(request.getMobile()), User::getMobile, request.getMobile())
-                        .eq(User::getYn, Objects.isNull(request.getYn()) ? YNEnum.YES.getCode() : request.getYn())
-                        .orderByDesc(User::getModified)
+                        .eq(Objects.nonNull(request.getYn()), User::getYn, request.getYn())
+                        .eq(Objects.nonNull(request.getAdmin()), User::getAdmin, request.getAdmin())
+                        .orderByDesc(User::getId)
 
         );
+        return PageUtils.convertToPage(page, userModelTranslator);
     }
 
     @Override
-    public boolean deletes(List<Long> ids, User user) {
-        if (CollectionUtils.isNotEmpty(ids)) {
-            return this.updateBatchById(ids.stream().map(id -> {
-                User update = new User();
-                update.setId(id);
-                update.setYn(YNEnum.NO.getCode());
-                update.setModified(LocalDateTime.now());
-                update.setModifierId(user.getId());
-                update.setModifierName(user.getName());
-                return update;
-            }).collect(Collectors.toList()), 200);
+    public boolean changeYn(ChangeStatusParams request, User user) {
+        if (CollectionUtils.isNotEmpty(request.getIds())) {
+            return this.update(
+                    new User()
+                            .setYn(request.getStatus())
+                            .setModified(LocalDateTime.now())
+                            .setModifierId(user.getId())
+                            .setModifierName(user.getName()),
+                    Wrappers.<User>lambdaQuery()
+                            .in(User::getId, request.getIds())
+            );
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean changeAdmin(ChangeStatusParams request, User user) {
+        if (CollectionUtils.isNotEmpty(request.getIds())) {
+            return this.update(
+                    new User()
+                            .setAdmin(Objects.equals(YNEnum.YES.getCode(), request.getStatus()))
+                            .setModified(LocalDateTime.now())
+                            .setModifierId(user.getId())
+                            .setModifierName(user.getName()),
+                    Wrappers.<User>lambdaQuery()
+                            .in(User::getId, request.getIds())
+            );
+
         }
         return false;
     }

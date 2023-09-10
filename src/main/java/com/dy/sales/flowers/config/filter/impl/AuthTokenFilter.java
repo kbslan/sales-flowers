@@ -62,7 +62,7 @@ public class AuthTokenFilter implements SsoFilter {
             instance.setMobile(userModel.getMobile());
             instance.setUserName(userModel.getName());
             instance.setAdmin(userModel.isAdmin());
-            instance.setPermission(userModel.getPermission());
+            instance.setPermissions(userModel.getPermissions());
             instance.setExtInfo(null);
         } catch (Exception e) {
             log.warn("校验token失败,msg:{}", e.getMessage());

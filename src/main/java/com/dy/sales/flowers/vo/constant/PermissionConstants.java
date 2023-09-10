@@ -9,5 +9,9 @@ public class PermissionConstants {
     /**
      * 超级管理员
      */
-    public static final String ADMIN = "admin_permission";
+    public static final String ADMIN = "admin";
+    /**
+     * 普通用户
+     */
+    public static final String NORMAL = "normal";
 }

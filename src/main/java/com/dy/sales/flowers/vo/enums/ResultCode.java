@@ -28,7 +28,7 @@ public enum ResultCode {
     USER_PASSWORD_ERROR("1005", "密码错误"),
     USER_DISABLED("1006", "账号被禁用，请联系管理员"),
     LOGIN_FAILED("1007", "登陆失败"),
-    RESET_PASSWORD_NOT_EQUAL("1008", "重置密码失败, 旧密码输入错误"),
+    RESET_PASSWORD_NOT_EQUAL("1008", "旧密码错误"),
     RESET_PASSWORD_FAILED("1009", "重置密码失败"),
     COOKIE_NOT_EXIST("1010", "cookieName: " + SsoConstants.COOKIE_NAME + "不存在"),
     COOKIE_CHECK_FAILED("1011", "token校验失败"),
@@ -38,7 +38,10 @@ public enum ResultCode {
     REQUEST_ILLEGAL("1015", "权限不足"),
 
     MOBILE_EMPTY("1016", "手机号码为空"),
-    PASSWORD_MISSING("1017", "密码不能为空");
+    PASSWORD_MISSING("1017", "密码不能为空"),
+    MOBILE_ILLEGAL("1018", "手机号码格式错误"),
+
+    ;
 
     /**
      * 编码

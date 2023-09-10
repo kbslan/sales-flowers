@@ -8,11 +8,13 @@ import com.dy.sales.flowers.service.UserService;
 import com.dy.sales.flowers.translator.UserModelTranslator;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
 import com.dy.sales.flowers.vo.enums.ResultCode;
+import com.dy.sales.flowers.vo.enums.YNEnum;
+import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.HttpResult;
 import com.dy.sales.flowers.vo.response.UserModel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -67,10 +69,10 @@ public class UserController {
      * @return 结果
      */
     @GetMapping("/logout")
-    public HttpResult<Void> logout(@CurrentUser User user, HttpServletResponse response) {
+    public HttpResult<Boolean> logout(@CurrentUser User user, HttpServletResponse response) {
         userService.logout(user);
         log.info("用户退出登录：{}", user);
-        return HttpResult.success();
+        return HttpResult.success(true);
     }
 
 
@@ -78,14 +80,8 @@ public class UserController {
      * 用户注册接口
      */
     @PostMapping("/register")
-    public HttpResult<UserModel> register(@RequestBody UserQuery request, HttpServletResponse response) {
-        UserModel userModel = userService.register(request);
-        if (Objects.nonNull(userModel)) {
-            String token = authService.generatorToken(userModel);
-            userModel.setToken(token);
-            return HttpResult.success(userModel);
-        }
-        return HttpResult.failed(ResultCode.SYS_EXCEPTION);
+    public HttpResult<Boolean> register(@RequestBody UserQuery request, HttpServletResponse response) {
+        return HttpResult.success(userService.register(request));
     }
 
 
@@ -93,39 +89,48 @@ public class UserController {
      * 用户修改密码接口
      */
     @PostMapping("/password/reset")
-    public HttpResult<Boolean> resetPassword(@RequestBody UserQuery request, @CurrentUser User user) {
-        //是否是本人修改密码
-        if (!Objects.equals(request.getMobile(), user.getMobile())) {
-            log.error("重置密码失败，非本人操作 request.mobile={} user.mobile={}", request.getMobile(), user.getMobile());
-            return HttpResult.failed(ResultCode.RESET_PASSWORD_FAILED);
-        }
-
-        boolean success = userService.resetPassword(request, user);
-        return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
+    public HttpResult<Boolean> resetPassword(@RequestBody UserQuery request) {
+        return HttpResult.success(userService.resetPassword(request));
     }
 
     /**
      * 用户列表查询
      */
     @PostMapping("/page")
-    public HttpResult<Page<User>> page(@RequestBody UserQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+    public HttpResult<Page<UserModel>> page(@RequestBody UserQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         return HttpResult.success(userService.pageQuery(request));
     }
 
     /**
-     * 逻辑删除
+     * 状态变更
      *
-     * @param ids  ids(多个用逗号分隔)
-     * @param user 当前用户信息
+     * @param request 请求参数
+     * @param user    当前用户信息
      * @return 结果
      */
-    @GetMapping("/delete")
-    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
-        if (StringUtils.isBlank(ids)) {
+    @PostMapping("/yn")
+    public HttpResult<Boolean> changeYn(@RequestBody ChangeStatusParams request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+        if (CollectionUtils.isEmpty(request.getIds()) || Objects.isNull(request.getStatus()) || Objects.isNull(YNEnum.get(request.getStatus()))) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
-        boolean success = userService.deletes(Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList()), user);
-        return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
+        boolean success = userService.changeYn(request, user);
+        return success ? HttpResult.success(true) : HttpResult.failed(ResultCode.SYS_EXCEPTION);
+    }
+
+    /**
+     * 管理员状态变更
+     *
+     * @param request 请求参数
+     * @param user    当前用户信息
+     * @return 结果
+     */
+    @PostMapping("/admin")
+    public HttpResult<Boolean> changeAdmin(@RequestBody ChangeStatusParams request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+        if (CollectionUtils.isEmpty(request.getIds()) || Objects.isNull(request.getStatus()) || Objects.isNull(YNEnum.get(request.getStatus()))) {
+            return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
+        }
+        boolean success = userService.changeAdmin(request, user);
+        return success ? HttpResult.success(true) : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
     /**

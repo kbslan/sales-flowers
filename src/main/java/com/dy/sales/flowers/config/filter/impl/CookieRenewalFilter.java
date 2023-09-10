@@ -41,10 +41,10 @@ public class CookieRenewalFilter implements SsoFilter {
         if (loginConfig.isRenewal()) {
             assert StringUtils.isNotBlank(token);
             //cookie是否续期
-            if (loginConfig.isRenewal()) {
-                CookieUtils.set(response, SsoConstants.COOKIE_NAME, token, SsoConstants.COOKIE_DOMAIN, SsoConstants.COOKIE_PATH, SsoConstants.MAX_AGE, Boolean.TRUE, SsoConstants.SECURE);
-                addCookie(request, response);
-            }
+//            if (loginConfig.isRenewal()) {
+//                CookieUtils.set(response, SsoConstants.COOKIE_NAME, token, SsoConstants.COOKIE_DOMAIN, SsoConstants.COOKIE_PATH, SsoConstants.MAX_AGE, Boolean.TRUE, SsoConstants.SECURE);
+//                addCookie(request, response);
+//            }
         }
         chain.doFilter(servletRequest, servletResponse);
     }

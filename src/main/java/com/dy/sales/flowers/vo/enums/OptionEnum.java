@@ -19,25 +19,25 @@ public enum OptionEnum {
     /**
      * 鲜花采摘人
      */
-    FLOWER_PICKER(1, "鲜花采摘人"),
+    FLOWER_PICKER("flower_picker", "鲜花采摘人"),
     /**
      * 鲜花品种
      */
-    FLOWER_CATEGORY(2, "鲜花品种"),
+    FLOWER_CATEGORY("flower_category", "鲜花品种"),
     /**
      * 鲜花规格
      */
-    FLOWER_SPECIFICATION(3, "鲜花规格"),
+    FLOWER_SPECIFICATION("flower_specification", "鲜花规格"),
     /**
      * 鲜花损坏原因
      */
-    FLOWER_DAMAGE_REASON(4, "鲜花损坏原因"),
+    FLOWER_DAMAGE_REASON("flower_damage_reason", "鲜花损坏原因"),
     ;
 
     /**
      * 编码
      */
-    private final Integer code;
+    private final String code;
     /**
      * 描述
      */
@@ -46,13 +46,13 @@ public enum OptionEnum {
     /**
      * 枚举缓存
      */
-    private static final Map<Integer, OptionEnum> CACHE;
+    private static final Map<String, OptionEnum> CACHE;
 
     static {
         CACHE = Arrays.stream(values()).collect(Collectors.toMap(OptionEnum::getCode, Function.identity()));
     }
 
-    public static OptionEnum get(Integer code) {
+    public static OptionEnum get(String code) {
         return CACHE.get(code);
     }
 }

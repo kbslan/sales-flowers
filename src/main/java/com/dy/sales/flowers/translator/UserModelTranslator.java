@@ -3,9 +3,12 @@ package com.dy.sales.flowers.translator;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
 import com.dy.sales.flowers.vo.response.UserModel;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.Function;
 
 /**
@@ -23,12 +26,17 @@ public class UserModelTranslator implements Function<User, UserModel> {
         model.setName(user.getName());
         model.setMobile(user.getMobile());
         model.setYn(user.getYn());
+        model.setAdmin(Boolean.TRUE.equals(user.getAdmin()));
+        model.setModifierName(user.getModifierName());
+        model.setModified(user.getModified());
+
         model.setUuid(MDC.get("trace"));
         model.setLoginTime(System.currentTimeMillis());
-        model.setAdmin(user.isAdmin());
-        if (user.isAdmin()) {
-            //权限
-            model.setPermission(PermissionConstants.ADMIN);
+        //权限
+        if (Boolean.TRUE.equals(user.getAdmin())) {
+            model.setPermissions(Arrays.asList(PermissionConstants.ADMIN, PermissionConstants.NORMAL));
+        } else {
+            model.setPermissions(Collections.singletonList(PermissionConstants.NORMAL));
         }
         return model;
     }

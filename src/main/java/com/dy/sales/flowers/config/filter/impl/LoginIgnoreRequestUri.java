@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 public class LoginIgnoreRequestUri {
 
-    private static final List<String> IGNORE_URI = Arrays.asList("/user/register", "/user/login");
+    private static final List<String> IGNORE_URI = Arrays.asList("/user/register", "/user/login", "/user/password/reset");
 
     public boolean isIgnore(String uri) {
         return IGNORE_URI.contains(uri);

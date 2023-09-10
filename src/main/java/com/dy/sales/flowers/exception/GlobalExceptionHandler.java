@@ -20,9 +20,19 @@ public class GlobalExceptionHandler {
 
 
     /**
+     * 登录业务异常
+     */
+    @ExceptionHandler(value = {LoginException.class})
+    @ResponseBody
+    public HttpResult exceptionHandler(LoginException e) {
+        log.error("登录业务异常", e);
+        return HttpResult.failed(e.getResultCode());
+    }
+
+    /**
      * 业务异常
      */
-    @ExceptionHandler(value = {LoginException.class, BusinessException.class})
+    @ExceptionHandler(value = {BusinessException.class})
     @ResponseBody
     public HttpResult exceptionHandler(BusinessException e) {
         log.error("接口业务异常", e);

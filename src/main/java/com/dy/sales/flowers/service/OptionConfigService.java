@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dy.sales.flowers.entity.OptionConfig;
 import com.dy.sales.flowers.entity.User;
+import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.OptionQuery;
 
 import java.util.List;
@@ -27,13 +28,13 @@ public interface OptionConfigService extends IService<OptionConfig> {
     Page<OptionConfig> pageQuery(OptionQuery request);
 
     /**
-     * 逻辑删除
+     * 状态变更
      *
-     * @param ids  用户ID列表
-     * @param user 操作人信息
+     * @param request 参数
+     * @param user    操作人信息
      * @return 结果
      */
-    boolean deletes(List<Long> ids, User user);
+    boolean changeYn(ChangeStatusParams request, User user);
 
     /**
      * 新增、编辑

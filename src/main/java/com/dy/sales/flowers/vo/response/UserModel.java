@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  * 用户模型
  *
@@ -13,8 +17,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserModel {
+public class UserModel implements Serializable {
 
+    private static final long serialVersionUID = -2810067788742742354L;
     /**
      * 主键
      */
@@ -38,6 +43,20 @@ public class UserModel {
     private Integer yn;
 
     /**
+     * 是否是管理员
+     */
+    private boolean admin;
+
+    /**
+     * 更新人名称
+     */
+    private String modifierName;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime modified;
+    /**
      * 随机值，保证每次生成的token不相同
      */
     private String uuid;
@@ -48,15 +67,13 @@ public class UserModel {
     private Long loginTime;
 
     /**
-     * 是否是管理员
+     * 权限列表
      */
-    private boolean admin;
+    private List<String> permissions;
 
     /**
-     * 权限，逗号分隔
+     * token
      */
-    private String permission;
-
     private String token;
 
     /**

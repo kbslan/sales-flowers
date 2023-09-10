@@ -3,6 +3,7 @@ package com.dy.sales.flowers.vo.response;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -42,9 +43,9 @@ public class UserContext {
     private boolean admin;
 
     /**
-     * 权限，逗号分隔
+     * 权限列表
      */
-    private String permission;
+    private List<String> permissions;
 
     /**
      * 扩展信息

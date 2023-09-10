@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.exception.LoginException;
+import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.UserModel;
-
-import java.util.List;
 
 /**
  * <p>
@@ -49,16 +48,15 @@ public interface UserService extends IService<User> {
      * @param request 注册参数
      * @return 注册成功返回用户对象，否则为null
      */
-    UserModel register(UserQuery request);
+    Boolean register(UserQuery request);
 
     /**
      * 重置密码
      *
      * @param request 参数
-     * @param user    操作人信息
-     * @return 成功、失败
+     * @return 重置成功返回用户对象，否则为null
      */
-    boolean resetPassword(UserQuery request, User user);
+    Boolean resetPassword(UserQuery request);
 
     /**
      * 分页查询
@@ -66,14 +64,23 @@ public interface UserService extends IService<User> {
      * @param request 参数
      * @return 结果
      */
-    Page<User> pageQuery(UserQuery request);
+    Page<UserModel> pageQuery(UserQuery request);
 
     /**
-     * 逻辑删除
+     * 状态变更
      *
-     * @param ids  用户ID列表
-     * @param user 操作人信息
+     * @param request 参数
+     * @param user    操作人信息
      * @return 结果
      */
-    boolean deletes(List<Long> ids, User user);
+    boolean changeYn(ChangeStatusParams request, User user);
+
+    /**
+     * 管理员状态变更
+     *
+     * @param request 参数
+     * @param user    操作人信息
+     * @return 结果
+     */
+    boolean changeAdmin(ChangeStatusParams request, User user);
 }

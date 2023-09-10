@@ -8,13 +8,17 @@ import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.service.OptionConfigService;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
 import com.dy.sales.flowers.vo.enums.ResultCode;
+import com.dy.sales.flowers.vo.enums.YNEnum;
+import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.OptionQuery;
 import com.dy.sales.flowers.vo.response.HttpResult;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -41,19 +45,19 @@ public class OptionConfigController {
     }
 
     /**
-     * 逻辑删除
+     * 状态变更
      *
-     * @param ids  ids(多个用逗号分隔)
-     * @param user 当前用户信息
+     * @param request 请求参数
+     * @param user    当前用户信息
      * @return 结果
      */
-    @GetMapping("/delete")
-    public HttpResult<Boolean> delete(@RequestParam("ids") String ids, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
-        if (StringUtils.isBlank(ids)) {
+    @PostMapping("/yn")
+    public HttpResult<Boolean> changeYn(@RequestBody ChangeStatusParams request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+        if (CollectionUtils.isEmpty(request.getIds()) || Objects.isNull(request.getStatus()) || Objects.isNull(YNEnum.get(request.getStatus()))) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
-        boolean success = optionConfigService.deletes(Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList()), user);
-        return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
+        boolean success = optionConfigService.changeYn(request, user);
+        return success ? HttpResult.success(success) : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
 

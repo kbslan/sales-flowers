@@ -16,7 +16,7 @@ import lombok.ToString;
 public class UserQuery extends PageQuery {
 
     /**
-     * 用户昵称（注册时使用）
+     * 用户名称
      */
     private String name;
 
@@ -37,4 +37,9 @@ public class UserQuery extends PageQuery {
      * 状态
      */
     private Integer yn = YNEnum.YES.getCode();
+
+    /**
+     * 管理员
+     */
+    private Integer admin;
 }

@@ -28,11 +28,11 @@ public class OptionConfig implements Serializable {
     private Long id;
 
     /**
-     * 类型， 1：采花人，2：品种，3：规格，4：报损原因
+     * 类型
      * @see OptionEnum
      */
     @TableField("type")
-    private Integer type;
+    private String type;
 
     /**
      * 名称

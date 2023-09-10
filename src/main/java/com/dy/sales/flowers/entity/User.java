@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -31,7 +32,7 @@ public class User implements Serializable {
     private Long id;
 
     /**
-     * 昵称
+     * 用户名称
      */
     @TableField("name")
     private String name;
@@ -46,7 +47,7 @@ public class User implements Serializable {
      * 是否是管理员
      */
     @TableField("admin")
-    private boolean admin;
+    private Boolean admin;
 
     /**
      * 密码, 暂时先明文，后续有需要再改造
@@ -104,10 +105,10 @@ public class User implements Serializable {
     private String salt;
 
     /**
-     * 权限，逗号分隔
+     * 权限列表
      */
     @TableField(exist = false)
-    private String permission;
+    private List<String> permissions;
 
 
 }
