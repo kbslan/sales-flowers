@@ -60,8 +60,8 @@ public class PackageFlowerRecord implements Serializable {
     /**
      * 包花数量
      */
-    @TableField("bag_amount")
-    private Long bagAmount;
+    @TableField("package_amount")
+    private Long packageAmount;
 
     /**
      * 损坏数量

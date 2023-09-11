@@ -42,7 +42,7 @@ public class PackageFlowerRecordUpdateTranslator implements BiFunction<PackageFl
         update.setCategoryId(request.getCategoryId());
         update.setSpecificationId(request.getSpecificationId());
         update.setDamageReasonId(request.getDamageReasonId());
-        update.setBagAmount(request.getBagAmount());
+        update.setPackageAmount(request.getBagAmount());
         update.setDamageAmount(request.getDamageAmount());
 
         //删除状态编辑后，变为提报状态

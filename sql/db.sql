@@ -6,7 +6,7 @@ CREATE TABLE `package_flower_record` (
 	`picker_id` BIGINT(19) NOT NULL COMMENT '采花人ID',
 	`category_id` BIGINT(19) NOT NULL COMMENT '品种ID',
 	`specification_id` BIGINT(19) NOT NULL COMMENT '规格ID',
-	`bag_amount` BIGINT(19) NOT NULL DEFAULT '0' COMMENT '包花数量',
+	`package_amount` BIGINT(19) NOT NULL DEFAULT '0' COMMENT '包花数量',
 	`damage_reason_id` BIGINT(19) NULL DEFAULT NULL COMMENT '损坏原因ID',
 	`damage_amount` BIGINT(19) NULL DEFAULT '0' COMMENT '损坏数量',
 	`yn` INT(10) NOT NULL DEFAULT '0' COMMENT '状态 1: 审核通过, 0: 提报中, -1: 删除',

@@ -30,7 +30,7 @@ public class PackageFlowRecordInsertTranslator implements BiFunction<PackageFlow
         entity.setCategoryId(request.getCategoryId());
         entity.setSpecificationId(request.getSpecificationId());
         entity.setDamageReasonId(request.getDamageReasonId());
-        entity.setBagAmount(request.getBagAmount());
+        entity.setPackageAmount(request.getBagAmount());
         entity.setDamageAmount(request.getDamageAmount());
         //提报中
         entity.setYn(YNEnum.NO.getCode());
