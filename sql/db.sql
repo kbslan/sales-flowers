@@ -1,0 +1,68 @@
+CREATE DATABASE `sales_flowers` /*!40100 COLLATE 'utf8mb4_bin' */;
+
+CREATE TABLE `bag_flower_record` (
+	`id` BIGINT(19) NOT NULL AUTO_INCREMENT,
+	`bag_id` BIGINT(19) NOT NULL COMMENT '包花人ID',
+	`picker_id` BIGINT(19) NOT NULL COMMENT '采花人ID',
+	`category_id` BIGINT(19) NOT NULL COMMENT '品种ID',
+	`specification_id` BIGINT(19) NOT NULL COMMENT '规格ID',
+	`bag_amount` BIGINT(19) NOT NULL DEFAULT '0' COMMENT '包花数量',
+	`damage_reason_id` BIGINT(19) NULL DEFAULT NULL COMMENT '损坏原因ID',
+	`damage_amount` BIGINT(19) NULL DEFAULT '0' COMMENT '损坏数量',
+	`yn` INT(10) NOT NULL DEFAULT '0' COMMENT '状态 1: 审核通过, 0: 提报中, -1: 删除',
+	`creator_id` BIGINT(19) NOT NULL DEFAULT '0' COMMENT '创建人ID',
+	`creator_name` VARCHAR(150) NOT NULL DEFAULT '0' COMMENT '创建人名称' COLLATE 'utf8mb4_bin',
+	`created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`modifier_id` BIGINT(19) NULL DEFAULT NULL COMMENT '更新人ID',
+	`modifier_name` VARCHAR(150) NULL DEFAULT NULL COMMENT '更新人名称' COLLATE 'utf8mb4_bin',
+	`modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	PRIMARY KEY (`id`) USING BTREE
+)
+COMMENT='包花记录'
+COLLATE='utf8mb3_general_ci'
+ENGINE=InnoDB
+;
+CREATE TABLE `option_config` (
+	`id` BIGINT(19) NOT NULL AUTO_INCREMENT,
+	`type` VARCHAR(150) NOT NULL DEFAULT '' COMMENT '类型' COLLATE 'utf8mb4_bin',
+	`label` VARCHAR(150) NOT NULL DEFAULT '0' COMMENT '名称' COLLATE 'utf8mb4_bin',
+	`value` VARCHAR(150) NOT NULL DEFAULT '0' COMMENT '值' COLLATE 'utf8mb4_bin',
+	`yn` INT(10) NOT NULL DEFAULT '0' COMMENT '状态 1: 启用, 0: 禁用',
+	`creator_id` BIGINT(19) NOT NULL DEFAULT '0' COMMENT '创建人ID',
+	`creator_name` VARCHAR(150) NULL DEFAULT NULL COMMENT '创建人名称' COLLATE 'utf8mb4_bin',
+	`created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`modifier_id` BIGINT(19) NOT NULL COMMENT '更新人ID',
+	`modifier_name` VARCHAR(150) NULL DEFAULT NULL COMMENT '更新人名称' COLLATE 'utf8mb4_bin',
+	`modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `uq_type_lable` (`type`, `label`) USING BTREE
+)
+COMMENT='选项配置'
+COLLATE='utf8mb3_general_ci'
+ENGINE=InnoDB
+;
+CREATE TABLE `user` (
+	`id` BIGINT(19) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(150) NOT NULL COMMENT '用户名称' COLLATE 'utf8mb4_bin',
+	`mobile` VARCHAR(50) NOT NULL COMMENT '电话号码' COLLATE 'utf8mb4_bin',
+	`password` VARCHAR(100) NOT NULL COMMENT '密码' COLLATE 'utf8mb4_bin',
+	`admin` INT(10) NOT NULL DEFAULT '0' COMMENT '是否是管理员',
+	`yn` INT(10) NOT NULL DEFAULT '1' COMMENT '状态 1: 启用, 0: 禁用',
+	`creator_id` BIGINT(19) NULL DEFAULT '0' COMMENT '创建人ID',
+	`creator_name` VARCHAR(150) NULL DEFAULT NULL COMMENT '创建人名称' COLLATE 'utf8mb4_bin',
+	`created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`modifier_id` BIGINT(19) NULL DEFAULT '0' COMMENT '更新人ID',
+	`modifier_name` VARCHAR(150) NULL DEFAULT NULL COMMENT '更新人名称' COLLATE 'utf8mb4_bin',
+	`modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	`salt` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_bin',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `uq_mobile_name` (`mobile`, `name`) USING BTREE,
+	UNIQUE INDEX `mobile` (`mobile`) USING BTREE,
+	INDEX `name` (`name`) USING BTREE
+)
+COMMENT='账号'
+COLLATE='utf8mb3_general_ci'
+ENGINE=InnoDB
+;
+
+
