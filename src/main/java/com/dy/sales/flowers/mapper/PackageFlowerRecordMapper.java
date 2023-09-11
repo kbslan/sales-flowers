@@ -1,7 +1,7 @@
 package com.dy.sales.flowers.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dy.sales.flowers.entity.BagFlowerRecord;
+import com.dy.sales.flowers.entity.PackageFlowerRecord;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.dy.sales.flowers.entity.BagFlowerRecord;
  * @author chao.lan
  * @since 2023-05-21
  */
-public interface BagFlowerRecordMapper extends BaseMapper<BagFlowerRecord> {
+public interface PackageFlowerRecordMapper extends BaseMapper<PackageFlowerRecord> {
 
 }

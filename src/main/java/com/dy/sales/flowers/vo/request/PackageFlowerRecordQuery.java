@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class BagFlowerRecordQuery extends PageQuery{
+public class PackageFlowerRecordQuery extends PageQuery{
 
     /**
      * id
@@ -21,7 +21,7 @@ public class BagFlowerRecordQuery extends PageQuery{
     /**
      * 包花人ID
      */
-    private Long bagId;
+    private Long packageId;
 
     /**
      * 采花人ID

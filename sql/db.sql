@@ -1,8 +1,8 @@
 CREATE DATABASE `sales_flowers` /*!40100 COLLATE 'utf8mb4_bin' */;
 
-CREATE TABLE `bag_flower_record` (
+CREATE TABLE `package_flower_record` (
 	`id` BIGINT(19) NOT NULL AUTO_INCREMENT,
-	`bag_id` BIGINT(19) NOT NULL COMMENT '包花人ID',
+	`package_id` BIGINT(19) NOT NULL COMMENT '包花人ID',
 	`picker_id` BIGINT(19) NOT NULL COMMENT '采花人ID',
 	`category_id` BIGINT(19) NOT NULL COMMENT '品种ID',
 	`specification_id` BIGINT(19) NOT NULL COMMENT '规格ID',

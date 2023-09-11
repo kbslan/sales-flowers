@@ -3,13 +3,13 @@ package com.dy.sales.flowers.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dy.sales.flowers.annotation.CurrentUser;
-import com.dy.sales.flowers.entity.BagFlowerRecord;
+import com.dy.sales.flowers.entity.PackageFlowerRecord;
 import com.dy.sales.flowers.entity.User;
-import com.dy.sales.flowers.service.BagFlowerRecordService;
+import com.dy.sales.flowers.service.PackageFlowerRecordService;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
-import com.dy.sales.flowers.vo.request.BagFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
 import com.dy.sales.flowers.vo.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,17 +28,17 @@ import java.util.stream.Collectors;
  * @since 2023-05-21
  */
 @RestController
-@RequestMapping("/bag/flower/record")
-public class BagFlowerRecordController {
+@RequestMapping("/package/flower/record")
+public class PackageFlowerRecordController {
     @Resource
-    private BagFlowerRecordService bagFlowerRecordService;
+    private PackageFlowerRecordService packageFlowerRecordService;
 
     /**
      * 列表查询
      */
     @PostMapping("/page")
-    public HttpResult<Page<BagFlowerRecord>> page(@RequestBody BagFlowerRecordQuery request, @CurrentUser User user) {
-        return HttpResult.success(bagFlowerRecordService.pageQuery(request));
+    public HttpResult<Page<PackageFlowerRecord>> page(@RequestBody PackageFlowerRecordQuery request, @CurrentUser User user) {
+        return HttpResult.success(packageFlowerRecordService.pageQuery(request));
     }
 
     /**
@@ -53,7 +53,7 @@ public class BagFlowerRecordController {
         if (StringUtils.isBlank(ids)) {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
-        boolean success = bagFlowerRecordService.deletes(Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList()), user);
+        boolean success = packageFlowerRecordService.deletes(Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList()), user);
         return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
     }
 
@@ -66,8 +66,8 @@ public class BagFlowerRecordController {
      * @return 结果
      */
     @PostMapping("/save")
-    public HttpResult<Boolean> save(@RequestBody BagFlowerRecordQuery request, @CurrentUser User user) {
-        return HttpResult.success(bagFlowerRecordService.saveOption(request, user));
+    public HttpResult<Boolean> save(@RequestBody PackageFlowerRecordQuery request, @CurrentUser User user) {
+        return HttpResult.success(packageFlowerRecordService.saveOption(request, user));
     }
 
     /**
@@ -78,8 +78,8 @@ public class BagFlowerRecordController {
      * @return 结果
      */
     @PostMapping("/save/batch")
-    public HttpResult<Boolean> saveBatch(@RequestBody List<BagFlowerRecordQuery> request, @CurrentUser User user) {
-        return HttpResult.success(bagFlowerRecordService.saveBatch(request, user));
+    public HttpResult<Boolean> saveBatch(@RequestBody List<PackageFlowerRecordQuery> request, @CurrentUser User user) {
+        return HttpResult.success(packageFlowerRecordService.saveBatch(request, user));
     }
 
 
@@ -91,9 +91,9 @@ public class BagFlowerRecordController {
      * @return 结果
      */
     @PostMapping("/audit")
-    public HttpResult<Boolean> auditPass(@RequestBody BagFlowerRecordQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+    public HttpResult<Boolean> auditPass(@RequestBody PackageFlowerRecordQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         request.setYn(YNEnum.YES.getCode());
-        return HttpResult.success(bagFlowerRecordService.saveOption(request, user));
+        return HttpResult.success(packageFlowerRecordService.saveOption(request, user));
     }
 
 }

@@ -2,9 +2,9 @@ package com.dy.sales.flowers.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dy.sales.flowers.entity.BagFlowerRecord;
+import com.dy.sales.flowers.entity.PackageFlowerRecord;
 import com.dy.sales.flowers.entity.User;
-import com.dy.sales.flowers.vo.request.BagFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @author chao.lan
  * @since 2023-05-21
  */
-public interface BagFlowerRecordService extends IService<BagFlowerRecord> {
+public interface PackageFlowerRecordService extends IService<PackageFlowerRecord> {
 
     /**
      * 分页查询
@@ -24,7 +24,7 @@ public interface BagFlowerRecordService extends IService<BagFlowerRecord> {
      * @param request 参数
      * @return 列表
      */
-    Page<BagFlowerRecord> pageQuery(BagFlowerRecordQuery request);
+    Page<PackageFlowerRecord> pageQuery(PackageFlowerRecordQuery request);
 
     /**
      * 逻辑删除
@@ -42,7 +42,7 @@ public interface BagFlowerRecordService extends IService<BagFlowerRecord> {
      * @param user    操作人信息
      * @return 结果
      */
-    boolean saveOption(BagFlowerRecordQuery request, User user);
+    boolean saveOption(PackageFlowerRecordQuery request, User user);
 
     /**
      * 批量提报数据
@@ -51,5 +51,5 @@ public interface BagFlowerRecordService extends IService<BagFlowerRecord> {
      * @param user    操作人信息
      * @return 结果
      */
-    boolean saveBatch(List<BagFlowerRecordQuery> request, User user);
+    boolean saveBatch(List<PackageFlowerRecordQuery> request, User user);
 }

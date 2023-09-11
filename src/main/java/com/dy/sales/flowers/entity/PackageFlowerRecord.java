@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("bag_flower_record")
-public class BagFlowerRecord implements Serializable {
+@TableName("package_flower_record")
+public class PackageFlowerRecord implements Serializable {
 
     private static final long serialVersionUID = 1956217935346879491L;
 
@@ -30,8 +30,8 @@ public class BagFlowerRecord implements Serializable {
     /**
      * 包花人ID
      */
-    @TableField(value = "bag_id", updateStrategy = FieldStrategy.NEVER)
-    private Long bagId;
+    @TableField(value = "package_id", updateStrategy = FieldStrategy.NEVER)
+    private Long packageId;
 
     /**
      * 采花人ID

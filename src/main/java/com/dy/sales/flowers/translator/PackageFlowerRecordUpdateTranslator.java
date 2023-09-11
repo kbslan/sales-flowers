@@ -1,11 +1,11 @@
 package com.dy.sales.flowers.translator;
 
-import com.dy.sales.flowers.entity.BagFlowerRecord;
+import com.dy.sales.flowers.entity.PackageFlowerRecord;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.exception.BusinessException;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
-import com.dy.sales.flowers.vo.request.BagFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -19,18 +19,18 @@ import java.util.function.BiFunction;
  * @author chao.lan
  */
 @Component
-public class BagFlowerRecordUpdateTranslator implements BiFunction<BagFlowerRecordQuery, User, BagFlowerRecord> {
+public class PackageFlowerRecordUpdateTranslator implements BiFunction<PackageFlowerRecordQuery, User, PackageFlowerRecord> {
 
     @Override
-    public BagFlowerRecord apply(BagFlowerRecordQuery request, User user) {
+    public PackageFlowerRecord apply(PackageFlowerRecordQuery request, User user) {
         Assert.notNull(request.getId(), "包花记录ID为空");
-        Assert.notNull(request.getBagId(), "包花人为空");
+        Assert.notNull(request.getPackageId(), "包花人为空");
         Assert.notNull(request.getPickerId(), "采花人为空");
         Assert.notNull(request.getCategoryId(), "品种为空");
         Assert.notNull(request.getSpecificationId(), "规格为空");
         Assert.notNull(request.getBagAmount(), "包花数量为空");
 
-        BagFlowerRecord update = new BagFlowerRecord();
+        PackageFlowerRecord update = new PackageFlowerRecord();
 
 
         YNEnum ynEnum = YNEnum.get(request.getYn());
