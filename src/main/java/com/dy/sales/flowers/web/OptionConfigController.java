@@ -40,7 +40,7 @@ public class OptionConfigController {
      * 列表查询
      */
     @PostMapping("/page")
-    public HttpResult<Page<OptionConfig>> page(@RequestBody OptionQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+    public HttpResult<Page<OptionConfig>> page(@RequestBody OptionQuery request, @CurrentUser User user) {
         return HttpResult.success(optionConfigService.pageQuery(request));
     }
 
