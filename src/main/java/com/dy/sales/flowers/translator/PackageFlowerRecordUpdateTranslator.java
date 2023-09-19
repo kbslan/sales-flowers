@@ -6,6 +6,7 @@ import com.dy.sales.flowers.exception.BusinessException;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordSave;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -19,16 +20,16 @@ import java.util.function.BiFunction;
  * @author chao.lan
  */
 @Component
-public class PackageFlowerRecordUpdateTranslator implements BiFunction<PackageFlowerRecordQuery, User, PackageFlowerRecord> {
+public class PackageFlowerRecordUpdateTranslator implements BiFunction<PackageFlowerRecordSave, User, PackageFlowerRecord> {
 
     @Override
-    public PackageFlowerRecord apply(PackageFlowerRecordQuery request, User user) {
+    public PackageFlowerRecord apply(PackageFlowerRecordSave request, User user) {
         Assert.notNull(request.getId(), "包花记录ID为空");
         Assert.notNull(request.getPackageId(), "包花人为空");
         Assert.notNull(request.getPickerId(), "采花人为空");
         Assert.notNull(request.getCategoryId(), "品种为空");
         Assert.notNull(request.getSpecificationId(), "规格为空");
-        Assert.notNull(request.getBagAmount(), "包花数量为空");
+        Assert.notNull(request.getPackageAmount(), "包花数量为空");
 
         PackageFlowerRecord update = new PackageFlowerRecord();
 
@@ -42,7 +43,7 @@ public class PackageFlowerRecordUpdateTranslator implements BiFunction<PackageFl
         update.setCategoryId(request.getCategoryId());
         update.setSpecificationId(request.getSpecificationId());
         update.setDamageReasonId(request.getDamageReasonId());
-        update.setPackageAmount(request.getBagAmount());
+        update.setPackageAmount(request.getPackageAmount());
         update.setDamageAmount(request.getDamageAmount());
 
         //删除状态编辑后，变为提报状态

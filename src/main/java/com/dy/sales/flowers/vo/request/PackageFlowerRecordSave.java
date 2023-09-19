@@ -6,12 +6,12 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
- * 包花记录查询参数
+ * 包花记录保存
  * @author chao.lan
  */
 @Getter
 @Setter
-public class PackageFlowerRecordQuery extends PageQuery{
+public class PackageFlowerRecordSave {
 
     /**
      * id
@@ -57,11 +57,5 @@ public class PackageFlowerRecordQuery extends PageQuery{
      * 状态 1: 审核通过, 0: 提报中, -1: 删除
      */
     private Integer yn;
-
-    /**
-     * 创建时间范围查询
-     */
-    private BetweenValue<LocalDateTime> created;
-
 
 }

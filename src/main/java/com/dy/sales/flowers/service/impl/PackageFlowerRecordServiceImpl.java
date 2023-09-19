@@ -14,6 +14,7 @@ import com.dy.sales.flowers.translator.PackageFlowerRecordUpdateTranslator;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordSave;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,7 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
         } else {
             wrapper.eq(PackageFlowerRecord::getYn, request.getYn());
         }
+        wrapper.orderByDesc(PackageFlowerRecord::getModified);
         return this.page(new Page<>(request.getPage(), request.getSize()), wrapper);
     }
 
@@ -75,7 +77,7 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
     }
 
     @Override
-    public boolean saveOption(PackageFlowerRecordQuery request, User user) {
+    public boolean saveOption(PackageFlowerRecordSave request, User user) {
         return Objects.isNull(request.getId())
                 ? this.save(packageFlowRecordInsertTranslator.apply(request, user))
                 : this.updateById(packageFlowerRecordUpdateTranslator.apply(request, user));
@@ -84,7 +86,7 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveBatch(List<PackageFlowerRecordQuery> request, User user) {
+    public boolean saveBatch(List<PackageFlowerRecordSave> request, User user) {
         if (CollectionUtils.isEmpty(request)) {
             return false;
         }

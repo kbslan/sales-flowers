@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dy.sales.flowers.entity.PackageFlowerRecord;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordSave;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public interface PackageFlowerRecordService extends IService<PackageFlowerRecord
      * @param user    操作人信息
      * @return 结果
      */
-    boolean saveOption(PackageFlowerRecordQuery request, User user);
+    boolean saveOption(PackageFlowerRecordSave request, User user);
 
     /**
      * 批量提报数据
@@ -51,5 +52,5 @@ public interface PackageFlowerRecordService extends IService<PackageFlowerRecord
      * @param user    操作人信息
      * @return 结果
      */
-    boolean saveBatch(List<PackageFlowerRecordQuery> request, User user);
+    boolean saveBatch(List<PackageFlowerRecordSave> request, User user);
 }

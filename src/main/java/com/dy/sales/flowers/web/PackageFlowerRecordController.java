@@ -10,6 +10,7 @@ import com.dy.sales.flowers.vo.constant.PermissionConstants;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
+import com.dy.sales.flowers.vo.request.PackageFlowerRecordSave;
 import com.dy.sales.flowers.vo.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +67,7 @@ public class PackageFlowerRecordController {
      * @return 结果
      */
     @PostMapping("/save")
-    public HttpResult<Boolean> save(@RequestBody PackageFlowerRecordQuery request, @CurrentUser User user) {
+    public HttpResult<Boolean> save(@RequestBody PackageFlowerRecordSave request, @CurrentUser User user) {
         return HttpResult.success(packageFlowerRecordService.saveOption(request, user));
     }
 
@@ -78,7 +79,7 @@ public class PackageFlowerRecordController {
      * @return 结果
      */
     @PostMapping("/save/batch")
-    public HttpResult<Boolean> saveBatch(@RequestBody List<PackageFlowerRecordQuery> request, @CurrentUser User user) {
+    public HttpResult<Boolean> saveBatch(@RequestBody List<PackageFlowerRecordSave> request, @CurrentUser User user) {
         return HttpResult.success(packageFlowerRecordService.saveBatch(request, user));
     }
 
@@ -91,7 +92,7 @@ public class PackageFlowerRecordController {
      * @return 结果
      */
     @PostMapping("/audit")
-    public HttpResult<Boolean> auditPass(@RequestBody PackageFlowerRecordQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+    public HttpResult<Boolean> auditPass(@RequestBody PackageFlowerRecordSave request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         request.setYn(YNEnum.YES.getCode());
         return HttpResult.success(packageFlowerRecordService.saveOption(request, user));
     }
