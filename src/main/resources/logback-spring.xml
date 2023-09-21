@@ -6,9 +6,6 @@
     <property name="charSet" value="UTF-8"/>
     <property name="maxHistory" value="7"/>
 
-    <springProperty scope="context" name="log.additivity" source="log.additivity"/>
-    <springProperty scope="context" name="log.sql.level" source="log.sql.level"/>
-    <springProperty scope="context" name="log.level" source="log.level"/>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${logPattern}</pattern>
@@ -115,24 +112,29 @@
         <appender-ref ref="SQL_FILE" />
     </appender>
 
-    <root level="${log.level}">
+    <root level="INFO">
         <!--打印三方日志-->
+        <appender-ref ref="ASYNC_ALL_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <logger name="com.dy.sales.flowers" level="${log.level}" additivity="${log.additivity}">
+    <logger name="com.dy.sales.flowers" level="INFO" additivity="false">
         <appender-ref ref="ASYNC_ALL_FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="com.dy.sales.flowers.web" level="${log.level}" additivity="${log.additivity}">
+    <logger name="com.dy.sales.flowers.web" level="INFO" additivity="false">
         <appender-ref ref="ASYNC_WEB_FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="com.dy.sales.flowers.service" level="${log.level}" additivity="${log.additivity}">
+    <logger name="com.dy.sales.flowers.service" level="INFO" additivity="false">
         <appender-ref ref="ASYNC_SERVICE_FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="ShardingSphere-SQL" level="${log.sql.level}" additivity="false">
+    <logger name="com.dy.sales.flowers.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="ASYNC_SQL_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 

@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Resource
     private UserService userService;
@@ -151,6 +151,18 @@ public class UserController {
         }
 
         return HttpResult.success(userModelTranslator.apply(byId));
+    }
+
+    /**
+     * 账号删除
+     *
+     * @param id   用户ID
+     * @param user 当前用户信息
+     * @return 用户信息
+     */
+    @GetMapping("/delete")
+    public HttpResult<Boolean> delete(@RequestParam(name = "id") Long id, @CurrentUser(permission= PermissionConstants.ADMIN) User user) {
+        return HttpResult.success(userService.removeById(id));
     }
 
 }

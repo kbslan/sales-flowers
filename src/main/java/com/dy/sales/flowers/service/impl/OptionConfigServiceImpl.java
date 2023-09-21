@@ -69,6 +69,7 @@ public class OptionConfigServiceImpl extends ServiceImpl<OptionConfigMapper, Opt
 
     @Override
     public boolean saveOption(OptionQuery request, User user) {
+        request.setValue(request.getLabel());
         return Objects.isNull(request.getId())
                 ? this.save(optionConfigInsertTranslator.apply(request, user))
                 : this.updateById(optionConfigUpdateTranslator.apply(request, user));

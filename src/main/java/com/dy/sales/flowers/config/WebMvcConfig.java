@@ -49,8 +49,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/health")
                 .excludePathPatterns("/ready")
-//                .excludePathPatterns("/user/login")
-//                .excludePathPatterns("/user/register")
+                .excludePathPatterns("/api/user/login")
+                .excludePathPatterns("/api/user/register")
         ;
         //请求参数记录日志拦截器
         interceptorRegistry.addInterceptor(requestLoggerInterceptor).addPathPatterns("/**");

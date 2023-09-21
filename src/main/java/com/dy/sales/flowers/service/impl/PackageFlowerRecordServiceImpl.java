@@ -77,7 +77,7 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
     }
 
     @Override
-    public boolean saveOption(PackageFlowerRecordSave request, User user) {
+    public boolean save(PackageFlowerRecordSave request, User user) {
         return Objects.isNull(request.getId())
                 ? this.save(packageFlowRecordInsertTranslator.apply(request, user))
                 : this.updateById(packageFlowerRecordUpdateTranslator.apply(request, user));
@@ -92,7 +92,7 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
         }
 
         request.forEach(item -> {
-            boolean success = saveOption(item, user);
+            boolean success = save(item, user);
             if (!success) {
                 throw new BusinessException(ResultCode.SYS_EXCEPTION);
             }

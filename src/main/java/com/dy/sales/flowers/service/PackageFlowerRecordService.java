@@ -43,7 +43,7 @@ public interface PackageFlowerRecordService extends IService<PackageFlowerRecord
      * @param user    操作人信息
      * @return 结果
      */
-    boolean saveOption(PackageFlowerRecordSave request, User user);
+    boolean save(PackageFlowerRecordSave request, User user);
 
     /**
      * 批量提报数据

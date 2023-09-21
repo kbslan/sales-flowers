@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @since 2023-05-21
  */
 @RestController
-@RequestMapping("/option/config")
+@RequestMapping("/api/option/config")
 public class OptionConfigController {
 
     @Resource

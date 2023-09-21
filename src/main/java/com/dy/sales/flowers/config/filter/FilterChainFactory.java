@@ -2,6 +2,7 @@ package com.dy.sales.flowers.config.filter;
 
 
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,36 @@ import java.util.List;
 public class FilterChainFactory {
 
     private static List<SsoFilter> filters;
+
+    /**
+     * 方式一：通过构造函数实现注入 保证过滤器的顺序 按照order升序
+     * @param filtersProvider 过滤器提供者
+     */
+    public FilterChainFactory(ObjectProvider<List<SsoFilter>> filtersProvider) {
+        List<SsoFilter> filters = filtersProvider.getIfAvailable();
+        if (CollectionUtils.isEmpty(filters)) {
+            FilterChainFactory.filters = Lists.newArrayList();
+            return;
+        }
+        FilterChainFactory.filters = filters;
+    }
+
+    /**
+     * 方式二：通过setter方法实现注入 保证过滤器的顺序 按照order升序
+     */
+//    @Autowired
+//    public void setFilters(List<SsoFilter> filters) {
+//        if (CollectionUtils.isEmpty(filters)) {
+//            FilterChainFactory.filters = Lists.newArrayList();
+//            return;
+//        }
+//        filters.sort((a, b) -> {
+//            int orderA = getOrder(a);
+//            int orderB = getOrder(b);
+//            return Integer.compare(orderA, orderB);
+//        });
+//        FilterChainFactory.filters = filters;
+//    }
 
     public static FilterChain getFilterChain() {
         return new SsoFilterChain(filters);
@@ -52,19 +83,6 @@ public class FilterChainFactory {
         }
     }
 
-    @Autowired
-    public void setFilters(List<SsoFilter> filters) {
-        if (CollectionUtils.isEmpty(filters)) {
-            FilterChainFactory.filters = Lists.newArrayList();
-            return;
-        }
-        filters.sort((a, b) -> {
-            int orderA = getOrder(a);
-            int orderB = getOrder(b);
-            return Integer.compare(orderA, orderB);
-        });
-        FilterChainFactory.filters = filters;
-    }
 
     private int getOrder(SsoFilter a) {
         Order order = a.getClass().getAnnotation(Order.class);

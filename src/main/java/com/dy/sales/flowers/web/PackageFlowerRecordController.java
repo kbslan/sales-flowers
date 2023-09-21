@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * @since 2023-05-21
  */
 @RestController
-@RequestMapping("/package/flower/record")
+@RequestMapping("/api/package/flower/record")
 public class PackageFlowerRecordController {
     @Resource
     private PackageFlowerRecordService packageFlowerRecordService;
@@ -68,7 +68,7 @@ public class PackageFlowerRecordController {
      */
     @PostMapping("/save")
     public HttpResult<Boolean> save(@RequestBody PackageFlowerRecordSave request, @CurrentUser User user) {
-        return HttpResult.success(packageFlowerRecordService.saveOption(request, user));
+        return HttpResult.success(packageFlowerRecordService.save(request, user));
     }
 
     /**
@@ -94,7 +94,7 @@ public class PackageFlowerRecordController {
     @PostMapping("/audit")
     public HttpResult<Boolean> auditPass(@RequestBody PackageFlowerRecordSave request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         request.setYn(YNEnum.YES.getCode());
-        return HttpResult.success(packageFlowerRecordService.saveOption(request, user));
+        return HttpResult.success(packageFlowerRecordService.save(request, user));
     }
 
 }

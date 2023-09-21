@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -23,9 +22,6 @@ import java.io.IOException;
 @Component
 @Order(1)
 public class CrossOriginFilter implements SsoFilter {
-    @Resource
-    private LoginIgnoreRequestUri loginIgnoreRequestUri;
-
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -46,10 +42,7 @@ public class CrossOriginFilter implements SsoFilter {
             // 允许访问的域
             response.setHeader("Access-Control-Allow-Origin", origin);
         }
-        String uri = request.getRequestURI();
-        if (loginIgnoreRequestUri.isIgnore(uri)) {
-            return;
-        }
+
         filterChain.doFilter(request, response);
 
     }

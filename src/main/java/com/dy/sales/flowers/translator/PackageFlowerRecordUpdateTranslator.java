@@ -31,6 +31,9 @@ public class PackageFlowerRecordUpdateTranslator implements BiFunction<PackageFl
         Assert.notNull(request.getSpecificationId(), "规格为空");
         Assert.notNull(request.getPackageAmount(), "包花数量为空");
 
+        if (Objects.nonNull(request.getDamageAmount()) && request.getDamageAmount()>0 && Objects.isNull(request.getDamageReasonId())) {
+            throw new BusinessException(ResultCode.PARAM_EXCEPTION);
+        }
         PackageFlowerRecord update = new PackageFlowerRecord();
 
 
