@@ -1,9 +1,11 @@
 server:
-  port: 8099
+  port: 8080
+jwt:
+  #jwt 秘钥
+  secretKey: a0a2abd8-6162-41c3-83d6-1cf559b46afc
 spring:
-  jwtAuth:
-    #jwt 秘钥
-    secretKey: a0a2abd8-6162-41c3-83d6-1cf559b46afc
+  application:
+      name: sales_flowers
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -41,8 +41,8 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
     private PackageFlowerRecordUpdateTranslator packageFlowerRecordUpdateTranslator;
 
     @Override
-    public Page<PackageFlowerRecord> pageQuery(PackageFlowerRecordQuery request) {
-        LambdaQueryWrapper<PackageFlowerRecord> wrapper = Wrappers.<PackageFlowerRecord>lambdaQuery()
+    public LambdaQueryWrapper<PackageFlowerRecord> buildQueryWrapper(PackageFlowerRecordQuery request) {
+        LambdaQueryWrapper<PackageFlowerRecord> wrapper = Wrappers.lambdaQuery(PackageFlowerRecord.class)
                 .eq(Objects.nonNull(request.getId()), PackageFlowerRecord::getId, request.getId())
                 .eq(Objects.nonNull(request.getPackageId()), PackageFlowerRecord::getPackageId, request.getPackageId())
                 .eq(Objects.nonNull(request.getPickerId()), PackageFlowerRecord::getPickerId, request.getPickerId())
@@ -50,17 +50,25 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
                 .eq(Objects.nonNull(request.getSpecificationId()), PackageFlowerRecord::getSpecificationId, request.getSpecificationId())
                 .eq(Objects.nonNull(request.getDamageReasonId()), PackageFlowerRecord::getDamageReasonId, request.getDamageReasonId())
                 ;
-        if (Objects.nonNull(request.getCreated()) && Objects.nonNull(request.getCreated().getMin()) && Objects.nonNull(request.getCreated().getMax())) {
-            wrapper.between(PackageFlowerRecord::getCreated, request.getCreated().getMin(), request.getCreated().getMax());
+        if (Objects.nonNull(request.getStart()) && Objects.nonNull(request.getEnd())) {
+            wrapper.between(PackageFlowerRecord::getCreated, request.getStart(), request.getEnd());
         }
         if (Objects.isNull(request.getYn())) {
             wrapper.ne(PackageFlowerRecord::getYn, YNEnum.DELETED.getCode());
         } else {
             wrapper.eq(PackageFlowerRecord::getYn, request.getYn());
         }
+        return wrapper;
+    }
+
+    @Override
+    public Page<PackageFlowerRecord> pageQuery(PackageFlowerRecordQuery request) {
+        LambdaQueryWrapper<PackageFlowerRecord> wrapper = buildQueryWrapper(request);
         wrapper.orderByDesc(PackageFlowerRecord::getModified);
         return this.page(new Page<>(request.getPage(), request.getSize()), wrapper);
     }
+
+
 
     @Override
     public boolean deletes(List<Long> ids, User user) {
@@ -98,5 +106,23 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
             }
         });
         return true;
+    }
+
+    @Override
+    public boolean audit(Long id, Integer yn, User user) {
+        return this.update(Wrappers.lambdaUpdate(PackageFlowerRecord.class)
+                .set(Objects.nonNull(yn), PackageFlowerRecord::getYn, yn)
+                .set(PackageFlowerRecord::getAuditId, user.getId())
+                .set(PackageFlowerRecord::getAuditTime, LocalDateTime.now())
+                .eq(PackageFlowerRecord::getId, id));
+    }
+
+    @Override
+    public boolean remark(Long id, String remark, User user) {
+        return this.update(Wrappers.lambdaUpdate(PackageFlowerRecord.class)
+                .set(PackageFlowerRecord::getRemark, remark)
+                .set(PackageFlowerRecord::getRemarkId, user.getId())
+                .set(PackageFlowerRecord::getRemarkTime, LocalDateTime.now())
+                .eq(PackageFlowerRecord::getId, id));
     }
 }

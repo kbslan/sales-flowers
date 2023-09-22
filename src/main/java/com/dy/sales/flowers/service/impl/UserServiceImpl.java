@@ -1,5 +1,6 @@
 package com.dy.sales.flowers.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -141,16 +142,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Page<UserModel> pageQuery(UserQuery request) {
-        Page<User> page = this.page(new Page<>(request.getPage(), request.getSize()),
-                Wrappers.<User>lambdaQuery()
-                        .like(StringUtils.isNotBlank(request.getName()), User::getName, request.getName())
-                        .like(StringUtils.isNotBlank(request.getMobile()), User::getMobile, request.getMobile())
-                        .eq(Objects.nonNull(request.getYn()), User::getYn, request.getYn())
-                        .eq(Objects.nonNull(request.getAdmin()), User::getAdmin, request.getAdmin())
-                        .orderByDesc(User::getId)
-
-        );
+        Page<User> page = this.page(new Page<>(request.getPage(), request.getSize()), buildQueryWrapper(request));
         return PageUtils.convertToPage(page, userModelTranslator);
+    }
+
+    private static LambdaQueryWrapper<User> buildQueryWrapper(UserQuery request) {
+        return Wrappers.<User>lambdaQuery()
+                .like(StringUtils.isNotBlank(request.getName()), User::getName, request.getName())
+                .like(StringUtils.isNotBlank(request.getMobile()), User::getMobile, request.getMobile())
+                .eq(Objects.nonNull(request.getYn()), User::getYn, request.getYn())
+                .eq(Objects.nonNull(request.getAdmin()), User::getAdmin, request.getAdmin())
+                .orderByDesc(User::getId);
+    }
+
+    @Override
+    public List<UserModel> list(UserQuery request) {
+        return this.list(buildQueryWrapper(request)).stream()
+                .map(userModelTranslator).collect(Collectors.toList());
     }
 
     @Override

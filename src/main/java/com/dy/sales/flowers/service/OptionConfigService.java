@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dy.sales.flowers.entity.OptionConfig;
 import com.dy.sales.flowers.entity.User;
+import com.dy.sales.flowers.vo.enums.OptionEnum;
 import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.OptionQuery;
 
@@ -44,4 +45,21 @@ public interface OptionConfigService extends IService<OptionConfig> {
      * @return 结果
      */
     boolean saveOption(OptionQuery request, User user);
+
+    /**
+     * 查询所有类型的配置
+     *
+     * @param type 类型
+     * @return 结果
+     */
+    List<OptionConfig> list(OptionEnum type);
+
+    /**
+     * 查询所有类型的配置
+     *
+     * @param type 类型
+     * @param yn   状态
+     * @return 结果
+     */
+    List<OptionConfig> list(OptionEnum type, Integer yn);
 }

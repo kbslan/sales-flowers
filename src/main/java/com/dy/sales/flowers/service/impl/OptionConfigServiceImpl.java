@@ -5,10 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dy.sales.flowers.entity.OptionConfig;
 import com.dy.sales.flowers.entity.User;
+import com.dy.sales.flowers.exception.BusinessException;
 import com.dy.sales.flowers.mapper.OptionConfigMapper;
 import com.dy.sales.flowers.service.OptionConfigService;
 import com.dy.sales.flowers.translator.OptionConfigInsertTranslator;
 import com.dy.sales.flowers.translator.OptionConfigUpdateTranslator;
+import com.dy.sales.flowers.vo.enums.OptionEnum;
+import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.OptionQuery;
@@ -21,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -73,5 +75,20 @@ public class OptionConfigServiceImpl extends ServiceImpl<OptionConfigMapper, Opt
         return Objects.isNull(request.getId())
                 ? this.save(optionConfigInsertTranslator.apply(request, user))
                 : this.updateById(optionConfigUpdateTranslator.apply(request, user));
+    }
+
+    @Override
+    public List<OptionConfig> list(OptionEnum type) {
+        return list(type, null);
+    }
+
+    @Override
+    public List<OptionConfig> list(OptionEnum type, Integer yn) {
+        if (Objects.isNull(type)) {
+            throw new BusinessException(ResultCode.PARAM_EXCEPTION);
+        }
+        return this.list(Wrappers.lambdaQuery(OptionConfig.class)
+                .eq(OptionConfig::getType, type.getCode())
+                .eq(Objects.nonNull(yn), OptionConfig::getYn, yn));
     }
 }

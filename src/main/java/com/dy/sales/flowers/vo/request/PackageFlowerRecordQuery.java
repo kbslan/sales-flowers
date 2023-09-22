@@ -1,5 +1,6 @@
 package com.dy.sales.flowers.vo.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,10 +59,11 @@ public class PackageFlowerRecordQuery extends PageQuery{
      */
     private Integer yn;
 
-    /**
-     * 创建时间范围查询
-     */
-    private BetweenValue<LocalDateTime> created;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime start;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime end;
 
 
 }

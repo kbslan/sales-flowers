@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class AuthService {
-    @Value("${spring.jwtAuth.secretKey:i_am_a_developer}")
+    @Value("${jwt.secretKey:i_am_a_developer}")
     private String secretKey;
 
 

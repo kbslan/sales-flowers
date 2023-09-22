@@ -112,5 +112,35 @@ public class PackageFlowerRecord implements Serializable {
     @TableField("modified")
     private LocalDateTime modified;
 
+    /**
+     * 审核人ID
+     */
+    @TableField("audit_id")
+    private Long auditId;
+
+    /**
+     * 审核时间
+     */
+    @TableField("audit_time")
+    private LocalDateTime auditTime;
+
+    /**
+     * 评价人ID
+     */
+    @TableField("remark_id")
+    private Long remarkId;
+
+    /**
+     * 评价内容
+     */
+    @TableField("remark")
+    private String remark;
+
+    /**
+     * 评价时间
+     */
+    @TableField("remark_time")
+    private LocalDateTime remarkTime;
+
 
 }

@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -94,13 +93,20 @@ public class UserController {
     }
 
     /**
-     * 用户列表查询
+     * 用户分页查询
      */
     @PostMapping("/page")
     public HttpResult<Page<UserModel>> page(@RequestBody UserQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
         return HttpResult.success(userService.pageQuery(request));
     }
 
+    /**
+     * 用户列表查询
+     */
+    @PostMapping("/list")
+    public HttpResult<List<UserModel>> list(@RequestBody UserQuery request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+        return HttpResult.success(userService.list(request));
+    }
     /**
      * 状态变更
      *

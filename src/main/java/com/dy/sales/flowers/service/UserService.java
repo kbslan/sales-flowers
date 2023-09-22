@@ -8,6 +8,8 @@ import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.UserQuery;
 import com.dy.sales.flowers.vo.response.UserModel;
 
+import java.util.List;
+
 /**
  * <p>
  * 账号 服务类
@@ -65,6 +67,14 @@ public interface UserService extends IService<User> {
      * @return 结果
      */
     Page<UserModel> pageQuery(UserQuery request);
+
+    /**
+     * 列表查询
+     *
+     * @param request 参数
+     * @return 结果
+     */
+    List<UserModel> list(UserQuery request);
 
     /**
      * 状态变更

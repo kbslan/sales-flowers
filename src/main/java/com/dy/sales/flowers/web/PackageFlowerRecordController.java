@@ -55,7 +55,7 @@ public class PackageFlowerRecordController {
             return HttpResult.failed(ResultCode.PARAM_EXCEPTION);
         }
         boolean success = packageFlowerRecordService.deletes(Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList()), user);
-        return success ? HttpResult.success() : HttpResult.failed(ResultCode.SYS_EXCEPTION);
+        return HttpResult.success(success);
     }
 
 
@@ -87,14 +87,29 @@ public class PackageFlowerRecordController {
     /**
      * 管理员审核包花记录
      *
-     * @param request 参数
-     * @param user    当前用户信息
+     * @param id   包花记录ID
+     * @param user 当前用户信息
      * @return 结果
      */
-    @PostMapping("/audit")
-    public HttpResult<Boolean> auditPass(@RequestBody PackageFlowerRecordSave request, @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
-        request.setYn(YNEnum.YES.getCode());
-        return HttpResult.success(packageFlowerRecordService.save(request, user));
+    @GetMapping("/audit")
+    public HttpResult<Boolean> audit(@RequestParam("id") Long id,
+                                     @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+        return HttpResult.success(packageFlowerRecordService.audit(id, YNEnum.YES.getCode(), user));
+    }
+
+    /**
+     * 管理员评价包花记录
+     *
+     * @param id     包花记录ID
+     * @param remark 评价内容
+     * @param user   当前用户信息
+     * @return 结果
+     */
+    @GetMapping("/remark")
+    public HttpResult<Boolean> remark(@RequestParam("id") Long id,
+                                      @RequestParam("remark") String remark,
+                                      @CurrentUser(permission = PermissionConstants.ADMIN) User user) {
+        return HttpResult.success(packageFlowerRecordService.remark(id, remark, user));
     }
 
 }

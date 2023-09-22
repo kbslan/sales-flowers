@@ -7,19 +7,21 @@ import com.dy.sales.flowers.entity.OptionConfig;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.service.OptionConfigService;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
+import com.dy.sales.flowers.vo.enums.OptionEnum;
 import com.dy.sales.flowers.vo.enums.ResultCode;
 import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.ChangeStatusParams;
 import com.dy.sales.flowers.vo.request.OptionQuery;
 import com.dy.sales.flowers.vo.response.HttpResult;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -37,11 +39,19 @@ public class OptionConfigController {
     private OptionConfigService optionConfigService;
 
     /**
-     * 列表查询
+     * 分页查询
      */
     @PostMapping("/page")
     public HttpResult<Page<OptionConfig>> page(@RequestBody OptionQuery request, @CurrentUser User user) {
         return HttpResult.success(optionConfigService.pageQuery(request));
+    }
+
+    /**
+     * 列表查询
+     */
+    @PostMapping("/list")
+    public HttpResult<List<OptionConfig>> list(@RequestBody OptionQuery request, @CurrentUser User user) {
+        return HttpResult.success(optionConfigService.list(OptionEnum.get(request.getType()), request.getYn()));
     }
 
     /**
