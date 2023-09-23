@@ -66,7 +66,7 @@ public class PackageFlowerExportServiceImpl implements ExportService {
                     .stream().collect(Collectors.toMap(OptionConfig::getId, Function.identity()));
             return packageFlowerRecordService.list(queryWrapper).stream().map(record -> {
                 List<String> row = new ArrayList<>();
-                row.add(record.getCreated().format(CommonConstants.YYYY_MM_DD));
+                row.add(record.getCreated().format(CommonConstants.YYYY_MM_DD_A));
                 row.add(record.getPickerId().toString());
                 row.add(record.getPackageId().toString());
                 row.add(categoryMap.get(record.getCategoryId()).getLabel());
