@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 
@@ -49,7 +50,7 @@ public class ExportController {
                              @CurrentUser(permission = PermissionConstants.ADMIN) User user)
             throws IOException {
         request.setYn(YNEnum.YES.getCode());
-        String format = LocalDateTime.now().format(CommonConstants.YYYY_MM_DD_HH_MM_SS);
+        String format = LocalDateTime.now().format(CommonConstants.YYYYMMDDHHMMSS);
         String fileName = "报损导出" + format + ".xlsx";
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
@@ -73,7 +74,7 @@ public class ExportController {
                                     @CurrentUser(permission = PermissionConstants.ADMIN) User user)
             throws IOException {
         request.setYn(YNEnum.YES.getCode());
-        String format = LocalDateTime.now().format(CommonConstants.YYYY_MM_DD_HH_MM_SS);
+        String format = LocalDateTime.now().format(CommonConstants.YYYYMMDDHHMMSS);
         String fileName = "包花数量导出" + format + ".xlsx";
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
@@ -81,5 +82,14 @@ public class ExportController {
         String file = URLEncoder.encode(fileName, "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + file);
         packageFlowerExportService.write(request, response.getOutputStream());
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String format = LocalDateTime.now().format(CommonConstants.YYYYMMDDHHMMSS);
+        System.out.println(format);
+        String fileName = "包花数量导出" + format + ".xlsx";
+        String file = URLEncoder.encode(fileName, "UTF-8");
+        System.out.println(file);
+
     }
 }
