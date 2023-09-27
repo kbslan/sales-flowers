@@ -83,13 +83,4 @@ public class ExportController {
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + file);
         packageFlowerExportService.write(request, response.getOutputStream());
     }
-
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String format = LocalDateTime.now().format(CommonConstants.YYYYMMDDHHMMSS);
-        System.out.println(format);
-        String fileName = "包花数量导出" + format + ".xlsx";
-        String file = URLEncoder.encode(fileName, "UTF-8");
-        System.out.println(file);
-
-    }
 }
