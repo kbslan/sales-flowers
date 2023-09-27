@@ -24,12 +24,12 @@ public class JwtTokenUtil {
         headerMap.put("typ", "JWT");
         headerMap.put("alg", "HS256");
         String headerStr = JSON.toJSONString(headerMap);
-        String headerBase64 = Base64.encode(headerStr);
+        String headerBase64 = Base64Util.encode(headerStr);
         if (headerBase64 == null) {
             log.error("JwtTokenUtil encode failed:{}", headerStr);
             return null;
         } else {
-            String payloadBase64 = Base64.encode(str);
+            String payloadBase64 = Base64Util.encode(str);
             if (payloadBase64 == null) {
                 log.error("JwtTokenUtil encode failed:{}", str);
                 return null;
@@ -61,7 +61,7 @@ public class JwtTokenUtil {
             String[] components = token.split("\\.");
             if (components.length == 3) {
                 String payloadBase64 = components[1];
-                String payloadJsonStr = Base64.decode(payloadBase64);
+                String payloadJsonStr = Base64Util.decode(payloadBase64);
                 return StringUtils.isBlank(payloadJsonStr) ? null : JSON.parseObject(payloadJsonStr, clazz);
             }
         }
