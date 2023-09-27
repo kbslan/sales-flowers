@@ -49,8 +49,11 @@ public class PackageFlowerExportServiceImpl implements ExportService {
         List<List<String>> head = new ArrayList<>();
         head.add(Collections.singletonList("日期"));
         head.add(Collections.singletonList("包花人编号"));
+        head.add(Collections.singletonList("包花人名称"));
         head.add(Collections.singletonList("采花人编号"));
-        head.add(Collections.singletonList("品种"));
+        head.add(Collections.singletonList("采花人名称"));
+        head.add(Collections.singletonList("品种编码"));
+        head.add(Collections.singletonList("品种名称"));
         getSpecifications().forEach((id, label) -> head.add(Collections.singletonList(label)));
         head.add(Collections.singletonList("合计"));
         return head;
@@ -61,14 +64,24 @@ public class PackageFlowerExportServiceImpl implements ExportService {
         if (request instanceof PackageFlowerRecordQuery) {
             PackageFlowerRecordQuery query = (PackageFlowerRecordQuery) request;
             LambdaQueryWrapper<PackageFlowerRecord> queryWrapper = packageFlowerRecordService.buildQueryWrapper(query);
+            //采花人
+            Map<Long, OptionConfig> pickerMap = optionConfigService.list(OptionEnum.FLOWER_PICKER)
+                    .stream().collect(Collectors.toMap(OptionConfig::getId, Function.identity()));
             //品种
             Map<Long, OptionConfig> categoryMap = optionConfigService.list(OptionEnum.FLOWER_CATEGORY)
                     .stream().collect(Collectors.toMap(OptionConfig::getId, Function.identity()));
+
             return packageFlowerRecordService.list(queryWrapper).stream().map(record -> {
                 List<String> row = new ArrayList<>();
+                //日期
                 row.add(record.getCreated().format(CommonConstants.YYYY_MM_DD_A));
+                //包花人
                 row.add(record.getPackageId().toString());
+                row.add(record.getCreatorName());
+                //采花人
                 row.add(record.getPickerId().toString());
+                row.add(pickerMap.get(record.getPickerId()).getLabel());
+                row.add(record.getCategoryId().toString());
                 row.add(categoryMap.get(record.getCategoryId()).getLabel());
                 getSpecifications().forEach((id, label) -> {
                     if (record.getSpecificationId().equals(id)) {

@@ -57,6 +57,7 @@ public class AuthTokenFilter implements SsoFilter {
                 log.error("Login cookie is expired, user:{}", userModel);
                 throw new LoginException(ResultCode.COOKIE_EXPIRED);
             }
+            log.info("解析请求新用户信息 user:{}", userModel);
             UserContext instance = UserContext.getInstance();
             instance.setUserId(userModel.getId());
             instance.setMobile(userModel.getMobile());
