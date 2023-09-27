@@ -3,7 +3,9 @@ package com.dy.sales.flowers.web;
 import com.dy.sales.flowers.annotation.CurrentUser;
 import com.dy.sales.flowers.entity.User;
 import com.dy.sales.flowers.service.ExportService;
+import com.dy.sales.flowers.vo.constant.CommonConstants;
 import com.dy.sales.flowers.vo.constant.PermissionConstants;
+import com.dy.sales.flowers.vo.enums.YNEnum;
 import com.dy.sales.flowers.vo.request.PackageFlowerRecordQuery;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -45,7 +48,9 @@ public class ExportController {
                              HttpServletResponse response,
                              @CurrentUser(permission = PermissionConstants.ADMIN) User user)
             throws IOException {
-        String fileName = "报损导出.xlsx";
+        request.setYn(YNEnum.YES.getCode());
+        String format = LocalDateTime.now().format(CommonConstants.YYYY_MM_DD_HH_MM_SS);
+        String fileName = "报损导出" + format + ".xlsx";
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码
@@ -67,7 +72,9 @@ public class ExportController {
                                     HttpServletResponse response,
                                     @CurrentUser(permission = PermissionConstants.ADMIN) User user)
             throws IOException {
-        String fileName = "包花数量导出.xlsx";
+        request.setYn(YNEnum.YES.getCode());
+        String format = LocalDateTime.now().format(CommonConstants.YYYY_MM_DD_HH_MM_SS);
+        String fileName = "包花数量导出" + format + ".xlsx";
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码
