@@ -98,6 +98,14 @@ public class PackageFlowerRecordController {
     }
 
     /**
+     * 一键审核查询结果数据
+     */
+    @PostMapping("/auditAll")
+    public HttpResult<Boolean> auditAll(@RequestBody PackageFlowerRecordQuery request, @CurrentUser User user) {
+        return HttpResult.success(packageFlowerRecordService.auditAll(request, user));
+    }
+
+    /**
      * 管理员评价包花记录
      *
      * @param id     包花记录ID

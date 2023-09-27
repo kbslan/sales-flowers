@@ -118,6 +118,21 @@ public class PackageFlowerRecordServiceImpl extends ServiceImpl<PackageFlowerRec
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean auditAll(PackageFlowerRecordQuery request, User user) {
+        LambdaQueryWrapper<PackageFlowerRecord> wrapper = buildQueryWrapper(request);
+        wrapper.orderByDesc(PackageFlowerRecord::getModified);
+        Page<PackageFlowerRecord> page = this.page(new Page<>(request.getPage(), request.getSize()), wrapper);
+        page.getRecords().forEach(item -> {
+            boolean success = audit(item.getId(), YNEnum.YES.getCode(), user);
+            if (!success) {
+                throw new BusinessException(ResultCode.SYS_EXCEPTION);
+            }
+        });
+        return true;
+    }
+
+    @Override
     public boolean remark(Long id, String remark, User user) {
         return this.update(Wrappers.lambdaUpdate(PackageFlowerRecord.class)
                 .set(PackageFlowerRecord::getRemark, remark)

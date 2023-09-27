@@ -73,6 +73,14 @@ public interface PackageFlowerRecordService extends IService<PackageFlowerRecord
      */
     boolean audit(Long id, Integer yn, User user);
 
+    /**
+     * 一键审核查询结果数据
+     * @param request
+     * @param user
+     * @return
+     */
+    boolean auditAll(PackageFlowerRecordQuery request, User user);
+
 
     /**
      * 评价
