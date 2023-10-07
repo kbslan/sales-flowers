@@ -28,7 +28,7 @@ public interface ExportService {
      * @param request 查询参数
      * @return 数据
      */
-    List<List<String>> data(Object request);
+    List<List<Object>> data(Object request);
 
     /**
      * 导出
