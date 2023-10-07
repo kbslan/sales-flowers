@@ -48,11 +48,11 @@ public class PackageFlowerExportServiceImpl implements ExportService {
     public List<List<String>> head() {
         List<List<String>> head = new ArrayList<>();
         head.add(Collections.singletonList("日期"));
-        head.add(Collections.singletonList("包花人编号"));
+//        head.add(Collections.singletonList("包花人编号"));
         head.add(Collections.singletonList("包花人名称"));
-        head.add(Collections.singletonList("采花人编号"));
+//        head.add(Collections.singletonList("采花人编号"));
         head.add(Collections.singletonList("采花人名称"));
-        head.add(Collections.singletonList("品种编码"));
+//        head.add(Collections.singletonList("品种编码"));
         head.add(Collections.singletonList("品种名称"));
         getSpecifications().forEach((id, label) -> head.add(Collections.singletonList(label)));
         head.add(Collections.singletonList("合计"));
@@ -76,12 +76,12 @@ public class PackageFlowerExportServiceImpl implements ExportService {
                 //日期
                 row.add(record.getCreated().format(CommonConstants.YYYY_MM_DD_A));
                 //包花人
-                row.add(record.getPackageId().toString());
+//                row.add(record.getPackageId().toString());
                 row.add(record.getCreatorName());
                 //采花人
-                row.add(record.getPickerId().toString());
+//                row.add(record.getPickerId().toString());
                 row.add(pickerMap.get(record.getPickerId()).getLabel());
-                row.add(record.getCategoryId().toString());
+//                row.add(record.getCategoryId().toString());
                 row.add(categoryMap.get(record.getCategoryId()).getLabel());
                 getSpecifications().forEach((id, label) -> {
                     if (record.getSpecificationId().equals(id)) {

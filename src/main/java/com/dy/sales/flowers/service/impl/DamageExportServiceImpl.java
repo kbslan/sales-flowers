@@ -39,11 +39,11 @@ public class DamageExportServiceImpl implements ExportService {
     public List<List<String>> head() {
         List<List<String>> head = new ArrayList<>();
         head.add(Collections.singletonList("日期"));
-        head.add(Collections.singletonList("采花人编号"));
+//        head.add(Collections.singletonList("采花人编号"));
         head.add(Collections.singletonList("采花人名称"));
-        head.add(Collections.singletonList("报损人编号"));
+//        head.add(Collections.singletonList("报损人编号"));
         head.add(Collections.singletonList("报损人名称"));
-        head.add(Collections.singletonList("品种编号"));
+//        head.add(Collections.singletonList("品种编号"));
         head.add(Collections.singletonList("品种名称"));
         head.add(Collections.singletonList("报损原因"));
         head.add(Collections.singletonList("数量"));
@@ -69,13 +69,13 @@ public class DamageExportServiceImpl implements ExportService {
                 //日期
                 row.add(record.getCreated().format(CommonConstants.YYYY_MM_DD_A));
                 //采花人
-                row.add(record.getPickerId().toString());
+//                row.add(record.getPickerId().toString());
                 row.add(pickerMap.get(record.getPickerId()).getLabel());
                 //报损人
-                row.add(record.getPackageId().toString());
+//                row.add(record.getPackageId().toString());
                 row.add(record.getCreatorName());
                 //品种
-                row.add(record.getCategoryId().toString());
+//                row.add(record.getCategoryId().toString());
                 row.add(categoryMap.get(record.getCategoryId()).getLabel());
                 //损坏原因
                 row.add(Objects.isNull(record.getDamageReasonId()) ? StringUtils.EMPTY : damageReasonMap.get(record.getDamageReasonId()).getLabel());
